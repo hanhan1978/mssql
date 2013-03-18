@@ -3,6 +3,11 @@
 #include <unistd.h>                  /*  for sleep()  */
 #include <curses.h>
 
+#define  UID       "hanhan"
+#define  PWD       "hanhan"
+#define  PROGNAME  "DemoProg"
+#define  DBSERVER  "192.168.10.92"
+#define  DBNAME    "hogehoge"
 
 int main(void) {
     WINDOW * mainwin;
