@@ -18,6 +18,7 @@ int main(void) {
 	    show_prompt();
         char *ss = get_input();
 	    //addstr(ss);
+         
 		addch('\n');
 	}
 

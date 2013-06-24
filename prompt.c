@@ -8,6 +8,9 @@ void show_prompt(){
 	addstr("mssql> ");
 }
 
+void show_continue(){
+	addstr("    -> ");
+}
 
 char * get_input(WINDOW *win){
     char *s;
@@ -16,12 +19,25 @@ char * get_input(WINDOW *win){
     int i=0; 
     while(1){
 	    s[i] = getch(); 
+
+        if(i==0 && s[i] == '\n'){
+            addstr("\n");
+            show_prompt();
+            continue;
+        }
+
+
 		addch(s[i]);
 		if(s[i] == ';'){
 		    sm_flag=1;
 		}
-		if(s[i] == '\n' && sm_flag == 1){
-		    return s;
+		if(s[i] == '\n'){
+        
+            if(sm_flag == 1){
+		        return s;
+            }else{
+                show_continue();
+            }
 		}
 		i++;
 	}
