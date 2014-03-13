@@ -4,6 +4,9 @@
 
 #include <ncurses.h>
 
+
+#include "mssql.h"
+
 void show_prompt(){
 	addstr("mssql> ");
 }
@@ -12,29 +15,56 @@ void show_continue(){
 	addstr("    -> ");
 }
 
-char * get_input(WINDOW *win){
-    char *s;
-    s = (char *)malloc(2048);
+void clear_propmpt(){
+
+}
+
+int del_backward(WINDOW *win, int i){
+    int x,y;
+	getyx(win, y, x);
+    if(x > PROMPT_LENGTH){
+        mvdelch(y,x-1);
+        i = i-1;
+    }
+    return i;
+}
+
+void set_input(WINDOW *win){
+    sql = (char *)malloc(2048);
 	int sm_flag = 0;
     int i=0; 
     while(1){
-	    s[i] = getch(); 
+	    sql[i] = getch(); 
 
-        if(i==0 && s[i] == '\n'){
+        //enter key without input
+        if(i==0 && sql[i] == '\n'){
             addstr("\n");
             show_prompt();
             continue;
         }
 
+//        printf("%0d", sql[i]);
+        //delete key
+        if(sql[i] == 127 || sql[i] == 8){
+            i = del_backward(win, i);
+            continue;
+        }
 
-		addch(s[i]);
-		if(s[i] == ';'){
+
+        //ctrl+p
+        if(sql[i] == 16){
+            addstr("unko");
+            continue;
+        }
+
+		addch(sql[i]);
+
+		if(sql[i] == ';'){
 		    sm_flag=1;
 		}
-		if(s[i] == '\n'){
-        
+		if(sql[i] == '\n'){
             if(sm_flag == 1){
-		        return s;
+		        return;
             }else{
                 show_continue();
             }
@@ -44,6 +74,3 @@ char * get_input(WINDOW *win){
 }
 
 
-//
-//		getyx(win, y, x);
-//		    printw("x = %d, y = %d", x, y);

@@ -2,24 +2,66 @@
 #include <stdio.h>
 #include <unistd.h>                  /*  for sleep()  */
 #include <curses.h>
+#include <locale.h>
 
-#define  UID       "hanhan"
-#define  PWD       "hanhan"
-#define  PROGNAME  "DemoProg"
-#define  DBSERVER  "192.168.10.92"
-#define  DBNAME    "hogehoge"
+#include "mssql.h"
+
+#define HISTORY_FILE "~/.mssql_history" 
+char hisfilepath[256];
+
+void  sethisfilepath(){
+    strcpy(hisfilepath, getenv("HOME"));
+    char *filename = "/.mssql_history";
+    strcat(hisfilepath, filename);
+}
+
+void writehis(char * sql){
+    FILE *fp;
+    fp = fopen(hisfilepath, "a");
+    fputs(sql, fp);
+    fclose(fp);
+}
+
+void readhis(){
+    FILE *fp;
+    fp = fopen(hisfilepath, "r");
+    sql = (char *)malloc(2048);
+    if( fp == NULL ) {
+         printf( "file open error\n" );
+         return -1;
+    }
+
+    fseek(fp, 5, SEEK_CUR);
+    int i;
+    while( fgets( sql , 1024 , fp ) != NULL ) {
+          break;
+//        printf( "row=%s" , sql );/* rowの末尾は\n\0 */
+    }
+//    fgets(row, 1024, fp);
+    fclose(fp);
+}
 
 int main(void) {
+    sethisfilepath(); //set history filepath to global var hisfilepath
+
+    readhis();
+    printf("%s", sql);
+    return 1;
+
+
+    setlocale(LC_ALL,"");
     WINDOW * mainwin;
     mainwin = initscr();
     noecho();
 
+
+
 	while(1){
 	    show_prompt();
-        char *ss = get_input();
-	    //addstr(ss);
-         
-		addch('\n');
+        set_input();
+//	    addstr(sql);
+
+        writehis(sql);
 	}
 
 	getch();

@@ -17,3 +17,7 @@ prompt.o: prompt.c
 .PHONY: clean
 clean:
 	rm *.o
+
+
+
+# gcc db.c -lsybdb
