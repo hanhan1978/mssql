@@ -43,17 +43,14 @@ void set_input(WINDOW *win){
             continue;
         }
 
-//        printf("%0d", sql[i]);
         //delete key
         if(sql[i] == 127 || sql[i] == 8){
             i = del_backward(win, i);
             continue;
         }
 
-
         //ctrl+p
         if(sql[i] == 16){
-            addstr("unko");
             continue;
         }
 
