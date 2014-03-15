@@ -43,28 +43,22 @@ void readhis(){
 int main(void) {
     sethisfilepath(); //set history filepath to global var hisfilepath
 
-    readhis();
+//    readhis();
 //    printf("%s", sql);
-//    return 1;
-
 
     setlocale(LC_ALL,"");
     WINDOW * mainwin;
     mainwin = initscr();
     noecho();
 
-
-
 	while(1){
 	    show_prompt();
         set_input();
-//	    addstr(sql);
-
+	    addstr(sql);
         writehis(sql);
 	}
 
 	getch();
-
  //   delwin(mainwin);
     endwin();
   //  refresh();

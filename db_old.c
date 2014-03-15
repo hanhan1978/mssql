@@ -20,6 +20,8 @@ DBPROCESS * connect_db(char *uid, char *pwd, char *dbname, char *sql);
 int * calc_colsize(int * max_col, char * sql);
 //void set_dbprocess(DBPROCESS *dbproc, LOGINREC *login);
 //void set_login(LOGINREC *login);
+void set_login();
+void set_dbprocess();
 
 DBPROCESS *dbproc;
 LOGINREC *login;

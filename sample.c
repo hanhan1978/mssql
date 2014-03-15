@@ -12,6 +12,9 @@ LOGINREC *login;
 DBPROCESS *dbproc;
 DBPROCESS *dbconn;
 
+void set_login();
+void set_dbprocess();
+
 int main(void) {
 
 
@@ -23,7 +26,7 @@ int main(void) {
   set_dbprocess();
 
   /* Now prepare a SQL statement */
-  dbcmd(dbconn, "SELECT id, prefecture, city FROM postal_codes ");
+  dbcmd(dbconn, "SELECT * FROM test ");
 
   /* Now execute the SQL statement */
   if (dbsqlexec(dbconn) == FAIL) {
