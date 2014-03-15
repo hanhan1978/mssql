@@ -28,7 +28,6 @@ void readhis(){
     sql = (char *)malloc(2048);
     if( fp == NULL ) {
          printf( "file open error\n" );
-         return -1;
     }
 
     fseek(fp, 5, SEEK_CUR);
@@ -45,8 +44,8 @@ int main(void) {
     sethisfilepath(); //set history filepath to global var hisfilepath
 
     readhis();
-    printf("%s", sql);
-    return 1;
+//    printf("%s", sql);
+//    return 1;
 
 
     setlocale(LC_ALL,"");

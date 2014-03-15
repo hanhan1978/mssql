@@ -6,12 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define  UID       "sa"
-#define  PWD       "hanhan"
+#define  UID       "dev"
+#define  PWD       "devdev"
 #define  PROGNAME  "DemoProg"
-#define  DBSERVER  "192.168.10.92"
+#define  DBSERVER  "192.168.10.6"
 //#define  DBSERVER  "192.168.1.102"
-#define  DBNAME    "hogehoge2"
+#define  DBNAME    "hogehoge"
 #define  CHARSET   "utf8"
 
 //int connect_db(DBPROCESS *dbconn, char *uid, char *pwd);
@@ -27,7 +27,7 @@ LOGINREC *login;
 int main(){
     char *sql;
 
-    sql = "select id, prefecture, city from postal_codes";
+    sql = "select * from test";
     set_login();
     set_dbprocess();
 
