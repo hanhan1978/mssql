@@ -54,7 +54,7 @@ int main(void) {
 	while(1){
 	    show_prompt();
         set_input();
-	    addstr(sql);
+        execute_query();
         writehis(sql);
 	}
 

@@ -4,6 +4,7 @@
 #include <sybdb.h>
 #include <syberror.h>
 #include <stdio.h>
+#include <ncurses.h>
 
 #include "mssql.h"
 
@@ -14,19 +15,21 @@ DBPROCESS *dbconn;
 
 void set_login();
 void set_dbprocess();
+int execute_query();
 
-int main(void) {
 
-
-  DBINT id;
+int execute_query(){
+//  DBINT id;
+  DBCHAR id[255];
   DBCHAR city[255];
   DBCHAR prefecture[255];
+  char   resultstr[100];
 
   set_login();
   set_dbprocess();
 
   /* Now prepare a SQL statement */
-  dbcmd(dbconn, "SELECT * FROM test ");
+  dbcmd(dbconn, sql);
 
   /* Now execute the SQL statement */
   if (dbsqlexec(dbconn) == FAIL) {
@@ -36,14 +39,15 @@ int main(void) {
   dbresults(dbconn); /* Very important to call this! :) */
 
   /* Now bind the returned columns to the variables */
-  dbbind(dbconn, 1, INTBIND, 0, (BYTE *)&id);
+  dbbind(dbconn, 1, NTBSTRINGBIND, 0, (BYTE *)&id);
   dbbind(dbconn, 2, NTBSTRINGBIND, 0, (BYTE *)&prefecture);
   dbbind(dbconn, 3, NTBSTRINGBIND, 0, (BYTE*)&city);
 
   /* Loop thru the result set */
   while (dbnextrow(dbconn) != NO_MORE_ROWS) {
     /* print out the data */
-    printf("%d %s %s\n", id, prefecture, city);
+    sprintf(resultstr, "%s %s %s\n", id, prefecture, city);
+    addstr(resultstr);
   }
 
   /* Clean up*/
