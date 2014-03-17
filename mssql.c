@@ -34,7 +34,7 @@ void readhis(){
     int i;
     while( fgets( sql , 1024 , fp ) != NULL ) {
           break;
-//        printf( "row=%s" , sql );/* rowの末尾は\n\0 */
+//        printf( "row=%s" , sql );/* row */
     }
 //    fgets(row, 1024, fp);
     fclose(fp);
