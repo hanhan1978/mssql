@@ -30,6 +30,7 @@ int del_backward(WINDOW *win, int i){
 }
 
 void set_input(WINDOW *win){
+    free(sql);
     sql = (char *)malloc(2048);
 	int sm_flag = 0;
     int i=0; 

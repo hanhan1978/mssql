@@ -26,7 +26,7 @@ void readhis(){
          printf( "file open error\n" );
     }
 
-    fseek(fp, 5, SEEK_CUR);
+    fseek(fp, 0, SEEK_CUR);
     int i;
     while( fgets( sql , 1024 , fp ) != NULL ) {
           break;

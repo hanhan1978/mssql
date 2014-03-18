@@ -2,8 +2,8 @@
 CC=gcc
 
 
-mssql: mssql.o prompt.o db.o
-	${CC} -o mssql mssql.o prompt.o db.o -lncurses -lsybdb
+mssql: mssql.o prompt.o db.o history.o
+	${CC} -o mssql mssql.o history.o prompt.o db.o -lncurses -lsybdb
 
 
 mssql.o: mssql.c
@@ -14,6 +14,9 @@ prompt.o: prompt.c
 
 db.o: db.c
 	${CC} -c db.c -lsybdb
+
+history.o: history.c
+	${CC} -c history.c
 
 .PHONY: clean
 clean:

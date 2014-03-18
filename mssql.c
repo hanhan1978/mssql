@@ -10,6 +10,7 @@
 
 int main(void) {
 
+    sethisfilepath();
 
     setlocale(LC_ALL,"");
     WINDOW * mainwin;
@@ -20,7 +21,7 @@ int main(void) {
 	    show_prompt();
         set_input();
         execute_query();
-        free(sql);
+        writehis(sql);
 	}
 
 	getch();
