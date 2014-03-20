@@ -19,38 +19,33 @@ int execute_query();
 
 
 int execute_query(){
-//  DBINT id;
-  DBCHAR id[255];
-  DBCHAR city[255];
-  DBCHAR prefecture[255];
-  char   resultstr[100];
 
   set_login();
   set_dbprocess();
 
-  /* Now prepare a SQL statement */
   dbcmd(dbconn, sql);
 
-  /* Now execute the SQL statement */
   if (dbsqlexec(dbconn) == FAIL) {
-    fprintf(stderr, "Could not execute the sql statement\n");
+    fprintf(stderr, "\nCould not execute the sql statement\n");
     return 5;
   }
-  dbresults(dbconn); /* Very important to call this! :) */
+  dbresults(dbconn); 
 
-  /* Now bind the returned columns to the variables */
-  dbbind(dbconn, 1, NTBSTRINGBIND, 0, (BYTE *)&id);
-  dbbind(dbconn, 2, NTBSTRINGBIND, 0, (BYTE *)&prefecture);
-  dbbind(dbconn, 3, NTBSTRINGBIND, 0, (BYTE*)&city);
-
-  /* Loop thru the result set */
-  while (dbnextrow(dbconn) != NO_MORE_ROWS) {
-    /* print out the data */
-    sprintf(resultstr, "%s %s %s\n", id, prefecture, city);
-    addstr(resultstr);
+  /* bind selected value  */
+  int colnum = dbnumcols(dbconn);
+  char val[colnum][255];
+  for(int i =0; i<colnum;i++){
+      dbbind(dbconn, i+1, NTBSTRINGBIND, 0, (BYTE *)val[i]);
   }
 
-  /* Clean up*/
+  while (dbnextrow(dbconn) != NO_MORE_ROWS) {
+    for(int i=0; i<colnum ;i++){
+        addstr(val[i]);
+        addstr(" ");
+    }
+    addstr("\n");
+  }
+
   dbfreebuf(dbconn);
   dbclose(dbconn);
   dbexit();
