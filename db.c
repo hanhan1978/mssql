@@ -35,13 +35,18 @@ int execute_query(){
   int colnum = dbnumcols(dbconn);
   char val[colnum][255];
   for(int i =0; i<colnum;i++){
-      dbbind(dbconn, i+1, NTBSTRINGBIND, 0, (BYTE *)val[i]);
+    dbbind(dbconn, i+1, NTBSTRINGBIND, 0, (BYTE *)val[i]);
   }
+  for(int i=0; i<colnum ;i++){
+    addstr(dbcolname(dbconn,i+1));
+    addstr("\t");
+  }
+  addstr("\n");
 
   while (dbnextrow(dbconn) != NO_MORE_ROWS) {
     for(int i=0; i<colnum ;i++){
-        addstr(val[i]);
-        addstr(" ");
+      addstr(val[i]);
+      addstr("\t");
     }
     addstr("\n");
   }
