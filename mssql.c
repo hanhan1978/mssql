@@ -6,7 +6,6 @@
 
 #include "mssql.h"
 
-#define HISTORY_FILE "~/.mssql_history" 
 
 int main(void) {
 

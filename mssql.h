@@ -9,3 +9,4 @@ char *sql;
 #define  DBNAME    "hogehoge"
 
 #define  PROMPT_LENGTH 7
+#define  HISTORY_FILE "~/.mssql_history" 
