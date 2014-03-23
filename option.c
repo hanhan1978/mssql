@@ -5,9 +5,13 @@
 /* Flag set by ‘--verbose’. */
 static int verbose_flag;
 
-int
-main (int argc, char **argv)
-{
+int set_cmd_option (int argc, char **argv); 
+
+int main (int argc, char **argv) {
+    set_cmd_option(argc, argv);
+}
+
+int set_cmd_option(int argc, char **argv) {
   int c;
 
   while (1)
@@ -27,8 +31,10 @@ main (int argc, char **argv)
                        long_options, &option_index);
 
       /* Detect the end of the options. */
-      if (c == -1)
-        break;
+      if (c == -1){
+          printf("abort1\n");
+          abort ();
+      }
 
       switch (c)
         {
@@ -42,9 +48,9 @@ main (int argc, char **argv)
           printf ("\n");
           break;
 
-        case 'a':
-          puts ("option -a\n");
-          break;
+//        case 'a':
+//          puts ("option -a\n");
+//          break;
 
         case 'p':
           printf ("option -c with value `%s'\n", optarg);
@@ -54,11 +60,8 @@ main (int argc, char **argv)
           printf ("option -h with value `%s'\n", optarg);
           break;
 
-        case '?':
-          /* getopt_long already printed an error message. */
-          break;
-
         default:
+          printf("abort2\n");
           abort ();
         }
     }
@@ -67,7 +70,6 @@ main (int argc, char **argv)
   if (verbose_flag)
     puts ("verbose flag is set");
 
-  /* Print any remaining command line arguments (not options). */
   if (optind < argc)
     {
       printf ("non-option ARGV-elements: ");
@@ -76,5 +78,4 @@ main (int argc, char **argv)
       putchar ('\n');
     }
 
-  exit (0);
 }
