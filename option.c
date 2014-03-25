@@ -1,18 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+
+
      
-/* Flag set by ‘--verbose’. */
+/* Flag set by */
 static int verbose_flag;
+
+static char *host;
 
 int set_cmd_option (int argc, char **argv); 
 
-int main (int argc, char **argv) {
-    set_cmd_option(argc, argv);
-}
 
 int set_cmd_option(int argc, char **argv) {
   int c;
+  int argument_fullfilled = 0;
 
   while (1)
     {
@@ -32,8 +34,7 @@ int set_cmd_option(int argc, char **argv) {
 
       /* Detect the end of the options. */
       if (c == -1){
-          printf("abort1\n");
-          abort ();
+          break;
       }
 
       switch (c)
@@ -48,16 +49,14 @@ int set_cmd_option(int argc, char **argv) {
           printf ("\n");
           break;
 
-//        case 'a':
-//          puts ("option -a\n");
-//          break;
-
         case 'p':
-          printf ("option -c with value `%s'\n", optarg);
+          printf ("option -p with value `%s'\n", optarg);
           break;
 
         case 'h':
           printf ("option -h with value `%s'\n", optarg);
+          argument_fullfilled = 1;
+          host = optarg ;
           break;
 
         default:
@@ -70,12 +69,15 @@ int set_cmd_option(int argc, char **argv) {
   if (verbose_flag)
     puts ("verbose flag is set");
 
-  if (optind < argc)
-    {
+  if (optind < argc){
       printf ("non-option ARGV-elements: ");
       while (optind < argc)
         printf ("%s ", argv[optind++]);
       putchar ('\n');
-    }
+  }
+  if(!argument_fullfilled){
+      return 0;
+  }
+  return 1;
 
 }
