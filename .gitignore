@@ -2,3 +2,8 @@
 *.swp
 *.out
 mssql
+Debug/*.mk
+
+
+.cproject
+.project

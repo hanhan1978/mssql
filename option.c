@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <getopt.h>
 
+#include "mssql.h"
 
      
 /* Flag set by */
 static int verbose_flag;
 
-static char *host;
 
 int set_cmd_option (int argc, char **argv); 
 
@@ -56,6 +56,7 @@ int set_cmd_option(int argc, char **argv) {
         case 'h':
           printf ("option -h with value `%s'\n", optarg);
           argument_fullfilled = 1;
+          host = (char *)malloc(2048);
           host = optarg ;
           break;
 

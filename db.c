@@ -15,6 +15,7 @@ DBPROCESS *dbconn;
 
 void set_login();
 void set_dbprocess();
+void set_database();
 int execute_query();
 
 
@@ -22,6 +23,7 @@ int execute_query(){
 
   set_login();
   set_dbprocess();
+  set_database();
 
   dbcmd(dbconn, sql);
 
@@ -74,7 +76,10 @@ void set_login(){
 }
 
 void set_dbprocess(){
-    if ((dbconn = dbopen(login, DBSERVER)) == NULL) { }
+    if ((dbconn = dbopen(login, host)) == NULL) { }
+}
+
+void set_database(){
     if ((dbuse(dbconn, DBNAME)) == FAIL) { }
     dbloginfree(login);
 }

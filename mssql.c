@@ -7,8 +7,14 @@
 #include "mssql.h"
 
 
-int main(void) {
+int main(int argc, char **argv ) {
 
+    if(!set_cmd_option (argc, argv)){
+        printf("please set host name\n\r");
+        return 0;
+    }
+//    printf("%s what's up2 \n", host);
+//    return 0;
     sethisfilepath();
 
     setlocale(LC_ALL,"");
