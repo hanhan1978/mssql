@@ -4,6 +4,6 @@
 mssql
 Debug/*.mk
 
-
+.settings
 .cproject
 .project
