@@ -1,7 +1,7 @@
 
 char *sql;
 
-#define  VERSION   "0.01"
+#define  VERSION   "0.0.2"
 #define  CHARSET   "utf8"
 #define  PROGNAME  "DemoProg"
 
