@@ -13,22 +13,18 @@ LOGINREC *login;
 DBPROCESS *dbproc;
 DBPROCESS *dbconn;
 
-void set_login();
-void set_dbprocess();
-void set_database();
-int execute_query();
 
 
-int execute_query(){
+int execute_query(struct dbconfig dbconf){
 
-  set_login();
-  set_dbprocess();
-  set_database();
+  set_login(dbconf);
+  set_dbprocess(dbconf);
+  set_database(dbconf);
 
   dbcmd(dbconn, sql);
 
   if (dbsqlexec(dbconn) == FAIL) {
-    fprintf(stderr, "\nCould not execute the sql statement\n");
+    addstr("\nCould not execute the sql statement\n");
     return 5;
   }
   dbresults(dbconn); 
@@ -63,23 +59,23 @@ int execute_query(){
 
 
 
-void set_login(){
+void set_login(struct dbconfig dbconf){
     dbinit();
     login = dblogin();
 	DBSETLCHARSET(login, CHARSET);
-    DBSETLUSER(login, UID);
-    DBSETLPWD(login, PWD);
+    DBSETLUSER(login, dbconf.username);
+    DBSETLPWD(login, dbconf.password);
     DBSETLAPP(login, PROGNAME);
     char hostname[MAXHOSTNAMELEN];
     if (gethostname(hostname, MAXHOSTNAMELEN) == 0)
     DBSETLHOST(login, hostname);
 }
 
-void set_dbprocess(){
-    if ((dbconn = dbopen(login, host)) == NULL) { }
+void set_dbprocess(struct dbconfig dbconf){
+    if ((dbconn = dbopen(login, dbconf.hostname)) == NULL) { }
 }
 
-void set_database(){
-    if ((dbuse(dbconn, DBNAME)) == FAIL) { }
+void set_database(struct dbconfig dbconf){
+    if ((dbuse(dbconn, dbconf.database)) == FAIL) { }
     dbloginfree(login);
 }

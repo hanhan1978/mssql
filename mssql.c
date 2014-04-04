@@ -6,15 +6,18 @@
 
 #include "mssql.h"
 
-
 int main(int argc, char **argv ) {
 
-    if(!set_cmd_option (argc, argv)){
+	struct dbconfig dbconf = {"", "","",""};
+
+    if(!set_cmd_option (argc, argv, &dbconf)){
         printf("please set host name\n\r");
         return 0;
     }
-//    printf("%s what's up2 \n", host);
-//    return 0;
+    puts(dbconf.username);
+    puts(dbconf.password);
+
+
     sethisfilepath();
 
     setlocale(LC_ALL,"");
@@ -25,7 +28,7 @@ int main(int argc, char **argv ) {
 	while(1){
 	    show_prompt();
         set_input();
-        execute_query();
+        execute_query(dbconf);
         writehis(sql);
 	}
 

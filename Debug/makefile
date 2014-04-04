@@ -4,7 +4,7 @@ CC=gcc
 all:mssql move clean
 
 mssql: mssql.o prompt.o db.o history.o option.o
-	${CC} -o mssql mssql.o history.o prompt.o db.o option.o -lncurses -lsybdb
+	${CC} -o mssql option.o mssql.o history.o prompt.o db.o -lncurses -lsybdb
 
 
 mssql.o: 
