@@ -1,9 +1,9 @@
 mssql
 =========
-mssql is a command line SQL Server Client.
-current version provide features below :
-
-basic crud sql execution to specific database.
+mssql is a command line SQL Server Client.  
+  
+current version provide features below :  
+basic CRUD sql execution to specific database.  
 
 prerequistes
 ==========
