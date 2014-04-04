@@ -1,6 +1,7 @@
 
 char *sql;
 
+#define  VERSION   "0.01"
 #define  CHARSET   "utf8"
 #define  PROGNAME  "DemoProg"
 
@@ -20,3 +21,5 @@ void set_login(struct dbconfig dbconf);
 void set_dbprocess(struct dbconfig dbconf);
 void set_database(struct dbconfig dbconf);
 int execute_query(struct dbconfig dbconf);
+
+void show_usage();

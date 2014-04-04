@@ -1,10 +1,10 @@
 
 CC=gcc
 
-all:mssql move clean
+all: mssql move clean
 
-mssql: mssql.o prompt.o db.o history.o option.o
-	${CC} -o mssql option.o mssql.o history.o prompt.o db.o -lncurses -lsybdb
+mssql: mssql.o prompt.o db.o history.o option.o usage.o
+	${CC} -o mssql option.o mssql.o history.o prompt.o db.o usage.o -lncurses -lsybdb
 
 
 mssql.o: 
@@ -21,6 +21,9 @@ history.o:
 
 option.o:
 	${CC} -c ../option.c
+	
+usage.o:
+	${CC} -c ../usage.c	
 
 move:
 	mv mssql ../bin/

@@ -6,16 +6,15 @@
 
 #include "mssql.h"
 
+
 int main(int argc, char **argv ) {
 
 	struct dbconfig dbconf = {"", "","",""};
 
     if(!set_cmd_option (argc, argv, &dbconf)){
-        printf("please set host name\n\r");
+    	show_usage();
         return 0;
     }
-    puts(dbconf.username);
-    puts(dbconf.password);
 
 
     sethisfilepath();
