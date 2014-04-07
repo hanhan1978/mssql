@@ -1,7 +1,7 @@
 
 CC=gcc
 
-all: mssql move clean
+all: mssql makedir move clean
 
 mssql: mssql.o prompt.o db.o history.o option.o usage.o
 	${CC} -o mssql option.o mssql.o history.o prompt.o db.o usage.o -lncurses -lsybdb
@@ -27,6 +27,11 @@ usage.o:
 
 move:
 	mv mssql bin/
+
+makedir:
+	if [ ! -d bin ]; \
+		then mkdir bin; \
+	fi
 
 .PHONY: clean
 clean:
