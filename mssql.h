@@ -1,12 +1,10 @@
 
-char *sql;
+
 
 #define  VERSION   "0.0.2"
 #define  CHARSET   "utf8"
 #define  PROGNAME  "DemoProg"
 
-#define  PROMPT_LENGTH 7
-#define  HISTORY_FILE "~/.mssql_history" 
 
 typedef struct dbconfig{
     char *username;
@@ -15,11 +13,17 @@ typedef struct dbconfig{
     char *database;
 } dbconf;
 
-int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf);
+int my_startup(void);
+int my_bind_cr(int, int);
+int my_bind_eoq(int, int);
+char *my_readline(void);
 
-void set_login(struct dbconfig dbconf);
-void set_dbprocess(struct dbconfig dbconf);
-void set_database(struct dbconfig dbconf);
-int execute_query(struct dbconfig dbconf);
+int my_eoq; 
+//int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf);
 
-void show_usage();
+//void set_login(struct dbconfig dbconf);
+//void set_dbprocess(struct dbconfig dbconf);
+//void set_database(struct dbconfig dbconf);
+//int execute_query(struct dbconfig dbconf);
+
+//void show_usage();

@@ -1,40 +1,51 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>                  /*  for sleep()  */
-#include <curses.h>
-#include <locale.h>
+#include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #include "mssql.h"
 
+int my_startup(void);
+int my_bind_cr(int, int);
+int my_bind_eoq(int, int);
+char *my_readline(void);
 
-int main(int argc, char **argv ) {
+int my_eoq; 
 
-	struct dbconfig dbconf = {"", "","",""};
+int main(int argc, char *argv[]) {
 
-    if(!set_cmd_option (argc, argv, &dbconf)){
-    	show_usage();
-        return 0;
+    rl_startup_hook = my_startup;
+    my_readline();
+}
+
+int my_startup(void) {
+    my_eoq = 0;
+    rl_bind_key('\n', my_bind_cr);
+    rl_bind_key('\r', my_bind_cr);
+    rl_bind_key(';', my_bind_eoq);
+    return 1;
+}
+
+int my_bind_cr(int count, int key) {
+    if (my_eoq == 1) {
+        rl_done = 1;
     }
+    rl_insert_text(" \n");
+    return 1;
+}
 
+int my_bind_eoq(int count, int key) {
+    my_eoq = 1;
+    printf(";");
+    return 1;
+}
 
-    sethisfilepath();
-
-    setlocale(LC_ALL,"");
-    WINDOW * mainwin;
-    mainwin = initscr();
-    noecho();
-
-	while(1){
-	    show_prompt();
-        set_input();
-        execute_query(dbconf);
-        writehis(sql);
-	}
-
-	getch();
- //   delwin(mainwin);
-    endwin();
-  //  refresh();
-
-    return EXIT_SUCCESS;
+char * my_readline(void) {
+    char *line;
+    while(1){
+        if ((line = readline("mssql> ")) == NULL) {
+            return NULL;
+        }
+        printf("\n\nSQL EXECUTE : %s\n", line);
+    }
 }
