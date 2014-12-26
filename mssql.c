@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     printf("%s %s %s %s\n", dbconf.hostname, dbconf.password, dbconf.username, dbconf.database);
-    return 1;
 
     rl_startup_hook = my_startup;
     my_readline();
