@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -17,12 +16,9 @@ int main(int argc, char *argv[]) {
     struct dbconfig dbconf = {"","","",""};
 
     if (!set_cmd_option( argc, argv, &dbconf)){
-        exit(1);
+        return 1;
     }
-    printf("%s\n", dbconf.hostname);
-    printf("%s\n", dbconf.password);
-    printf("%s\n", dbconf.username);
-    printf("%s\n", dbconf.database);
+    printf("%s %s %s %s\n", dbconf.hostname, dbconf.password, dbconf.username, dbconf.database);
     return 1;
 
     rl_startup_hook = my_startup;
