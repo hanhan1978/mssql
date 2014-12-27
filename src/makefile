@@ -24,11 +24,11 @@ option.o:
 	${CC} -c option.c
 
 move:
-	mv mssql bin/
+	mv mssql ../bin/
 
 makedir:
-	if [ ! -d bin ]; \
-		then mkdir bin; \
+	if [ ! -d ../bin ]; \
+		then mkdir ../bin; \
 	fi
 
 .PHONY: clean

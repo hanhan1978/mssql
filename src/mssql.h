@@ -5,6 +5,8 @@
 #define  CHARSET   "utf8"
 #define  PROGNAME  "DemoProg"
 
+#define eprintf(...) fprintf(stderr, __VA_ARGS__) 
+/*#define eprintf(...) do {} while(0) */
 
 typedef struct dbconfig{
     char *username;
