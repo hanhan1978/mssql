@@ -36,7 +36,12 @@ int my_bind_cr(int count, int key) {
     if (my_eoq == 1) {
         rl_done = 1;
     }
-    rl_insert_text(" \n");
+    if (strcmp( rl_line_buffer , "") == 0){
+        printf("\n");
+        rl_on_new_line();
+    }else{
+        rl_insert_text(" \n");
+    }
     return 1;
 }
 
