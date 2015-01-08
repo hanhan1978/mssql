@@ -3,13 +3,16 @@ CC=gcc
 
 all: mssql makedir move clean
 
-mssql: mssql.o usage.o option.o
-	${CC} -o mssql mssql.o usage.o option.o -L/usr/local/Cellar/readline/6.3.3/lib -lreadline
+mssql: mssql.o usage.o option.o slre.o
+	${CC} -o mssql mssql.o usage.o option.o slre.o -L/usr/local/Cellar/readline/6.3.3/lib -lreadline
 
 #	${CC} -o mssql option.o mssql.o history.o prompt.o db.o usage.o -lncurses -lsybdb
 
 mssql.o: 
 	${CC} -c mssql.c
+
+slre.o: 
+	${CC} -c slre.c
 
 #prompt.o: 
 #	${CC} -c prompt.c

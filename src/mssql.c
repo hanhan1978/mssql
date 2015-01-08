@@ -4,6 +4,7 @@
 #include <readline/history.h>
 
 #include "mssql.h"
+#include "slre.h"
 
 int my_startup(void);
 int my_bind_cr(int, int);
@@ -33,10 +34,11 @@ int my_startup(void) {
 }
 
 int my_bind_cr(int count, int key) {
+    struct slre_cap caps[4];
     if (my_eoq == 1) {
         rl_done = 1;
     }
-    if (strcmp( rl_line_buffer , "") == 0){
+    if (strcmp( rl_line_buffer , "") == 0 || slre_match("^\\s+$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
         printf("\n");
         rl_on_new_line();
     }else{
