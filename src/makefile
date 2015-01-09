@@ -14,9 +14,6 @@ mssql.o:
 slre.o: 
 	${CC} -c slre.c
 
-#prompt.o: 
-#	${CC} -c prompt.c
-
 db.o: 
 	${CC} -c db.c
 
