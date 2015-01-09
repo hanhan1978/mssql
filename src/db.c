@@ -4,7 +4,6 @@
 #include <sybdb.h>
 #include <syberror.h>
 #include <stdio.h>
-#include <ncurses.h>
 
 #include "mssql.h"
 
@@ -19,16 +18,12 @@ int connect_db(struct dbconfig dbconf){
 }
 
 
-int execute_query(struct dbconfig dbconf){
-
-  set_login(dbconf);
-  set_dbprocess(dbconf);
-  set_database(dbconf);
+int execute_query(char * sql){
 
   dbcmd(dbconn, sql);
 
   if (dbsqlexec(dbconn) == FAIL) {
-    addstr("\nCould not execute the sql statement\n");
+    printf("\nCould not execute the sql statement\n");
     return 5;
   }
   dbresults(dbconn); 
@@ -41,17 +36,15 @@ int execute_query(struct dbconfig dbconf){
     dbbind(dbconn, i+1, NTBSTRINGBIND, 0, (BYTE *)val[i]);
   }
   for(i=0; i<colnum ;i++){
-    addstr(dbcolname(dbconn,i+1));
-    addstr("\t");
+    printf("%s\t", dbcolname(dbconn,i+1));
   }
-  addstr("\n");
+  printf("\n");
 
   while (dbnextrow(dbconn) != NO_MORE_ROWS) {
     for(i=0; i<colnum ;i++){
-      addstr(val[i]);
-      addstr("\t");
+        printf("%s\t", val[i]);
     }
-    addstr("\n");
+    printf("\n");
   }
 
   dbfreebuf(dbconn);

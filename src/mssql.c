@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -62,6 +63,25 @@ char * my_readline(void) {
         if ((line = readline("mssql> ")) == NULL) {
             return NULL;
         }
+        line = trans_dialect(line);
         printf("\n\nSQL EXECUTE : %s\n", line);
+        execute_query(line);
+        free(line);
     }
 }
+
+
+char * trans_dialect(char * line){
+    char * sql = (char *)malloc(1024);
+    struct slre_cap caps[4];
+    if (slre_match("^show databases\\s*$", line, strlen(line), caps, 4, 0) > 0) {
+        strcpy(sql,"SELECT name FROM master.dbo.sysdatabases WHERE dbid > 4 ");
+    }else{
+        strcpy(sql, line);
+    }
+    free(line);
+    return sql;
+}
+
+
+

@@ -19,6 +19,7 @@ int my_startup(void);
 int my_bind_cr(int, int);
 int my_bind_eoq(int, int);
 char *my_readline(void);
+char * trans_dialect(char * line);
 
 int my_eoq; 
 int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf);
@@ -27,7 +28,7 @@ int connect_db(struct dbconfig dbconf);
 void set_login(struct dbconfig dbconf);
 int set_dbprocess(struct dbconfig dbconf);
 void set_database(struct dbconfig dbconf);
-int execute_query(struct dbconfig dbconf);
+int execute_query(char * sql);
 char * sql;
 
 void show_usage();
