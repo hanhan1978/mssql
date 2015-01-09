@@ -16,5 +16,5 @@ void show_usage(){
 }
 
 void show_version(){
-    printf("mssql Ver %s\n", VERSION);
+    printf("mssql Version %s\n", VERSION);
 }

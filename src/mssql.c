@@ -17,9 +17,12 @@ int main(int argc, char *argv[]) {
     struct dbconfig dbconf = {"","","",""};
 
     if (!set_cmd_option( argc, argv, &dbconf)){
-        return 1;
+        return 0;
     }
-    eprintf("%s %s %s %s\n", dbconf.hostname, dbconf.password, dbconf.username, dbconf.database);
+    //eprintf("%s %s %s %s\n", dbconf.hostname, dbconf.password, dbconf.username, dbconf.database);
+    if (!connect_db(dbconf)){
+        return 0;
+    }
 
     rl_startup_hook = my_startup;
     my_readline();
