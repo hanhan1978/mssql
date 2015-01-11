@@ -1,7 +1,9 @@
 
 CC=gcc
+#CFLAGS    = -g -O0 -ggdb
 
 all: mssql makedir move clean
+#all: clean mssql makedir move
 
 mssql: mssql.o usage.o option.o slre.o db.o
 	${CC} -o mssql mssql.o usage.o option.o slre.o db.o -L/usr/local/Cellar/readline/6.3.3/lib -lreadline -lsybdb

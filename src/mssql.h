@@ -15,6 +15,8 @@ typedef struct dbconfig{
     char *database;
 } dbconf;
 
+struct dbconfig * dbinfo;
+
 int my_startup(void);
 int my_bind_cr(int, int);
 int my_bind_eoq(int, int);
@@ -24,12 +26,8 @@ char * trans_dialect(char * line);
 int my_eoq; 
 int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf);
 
-int connect_db(struct dbconfig dbconf);
-void set_login(struct dbconfig dbconf);
-int set_dbprocess(struct dbconfig dbconf);
-void set_database(struct dbconfig dbconf);
+int connect_db();
 int execute_query(char * sql);
-char * sql;
 
 void show_usage();
 void show_version();

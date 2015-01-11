@@ -15,13 +15,13 @@ char *my_readline(void);
 int my_eoq; 
 
 int main(int argc, char *argv[]) {
-    struct dbconfig dbconf = {"","","",""};
-
-    if (!set_cmd_option( argc, argv, &dbconf)){
+ 
+    dbinfo = (struct dbconfig *)malloc( sizeof(struct dbconfig) );
+    if (!set_cmd_option( argc, argv, dbinfo)){
         return 0;
     }
     //eprintf("%s %s %s %s\n", dbconf.hostname, dbconf.password, dbconf.username, dbconf.database);
-    if (!connect_db(dbconf)){
+    if (!connect_db(dbinfo)){
         return 0;
     }
 
@@ -39,8 +39,9 @@ int my_startup(void) {
 
 int my_bind_cr(int count, int key) {
     struct slre_cap caps[4];
-    if (my_eoq == 1) {
+    if (my_eoq == 1 || slre_match(";\\s*$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
         rl_done = 1;
+        return 1;
     }
     if (strcmp( rl_line_buffer , "") == 0 || slre_match("^\\s+$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
         printf("\n");
@@ -53,20 +54,23 @@ int my_bind_cr(int count, int key) {
 
 int my_bind_eoq(int count, int key) {
     my_eoq = 1;
-    printf(";");
+    rl_insert_text(";");
     return 1;
 }
 
 char * my_readline(void) {
     char *line;
+    char *sql;
     while(1){
         if ((line = readline("mssql> ")) == NULL) {
             return NULL;
         }
-        line = trans_dialect(line);
-        printf("\n\nSQL EXECUTE : %s\n", line);
-        execute_query(line);
-        free(line);
+        sql = trans_dialect(line);
+        printf("\n\nSQL EXECUTE : %s\n", sql);
+        if (execute_query(sql) > 0){
+            add_history(line);
+        }
+        free(sql);
     }
 }
 
@@ -74,12 +78,13 @@ char * my_readline(void) {
 char * trans_dialect(char * line){
     char * sql = (char *)malloc(1024);
     struct slre_cap caps[4];
-    if (slre_match("^show databases\\s*$", line, strlen(line), caps, 4, 0) > 0) {
+    if (slre_match("^show databases\\s*;\\s*$", line, strlen(line), caps, 4, 0) > 0) {
         strcpy(sql,"SELECT name FROM master.dbo.sysdatabases WHERE dbid > 4 ");
+    }else if (slre_match("^show tables\\s*;\\s*$", line, strlen(line), caps, 4, 0) > 0) {
+        strcpy(sql,"SELECT name FROM sysobjects WHERE xtype = 'U'");
     }else{
         strcpy(sql, line);
     }
-    free(line);
     return sql;
 }
 
