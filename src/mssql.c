@@ -25,6 +25,13 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    //set hisotry file path
+    history_file = (char *)malloc(256);
+    strcpy(history_file, getenv("HOME"));
+    strcat(history_file, HISTORY_FILE_NAME);
+
+    read_history(history_file);
+
     rl_startup_hook = my_startup;
     my_readline();
 }
@@ -69,6 +76,7 @@ char * my_readline(void) {
         printf("\n\nSQL EXECUTE : %s\n", sql);
         if (execute_query(sql) > 0){
             add_history(line);
+            write_history(history_file);
         }
         free(sql);
     }
