@@ -8,3 +8,7 @@ Debug/*.mk
 .cproject
 .project
 todo.txt
+
+src/config.status
+src/config.log
+src/config.h

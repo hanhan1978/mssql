@@ -1,5 +1,5 @@
-CC=gcc
-LIBS=
+CC=@CC@
+LIBS=@LIBS@
 #CFLAGS    = -g -O0 -ggdb
 
 all: mssql makedir move clean
