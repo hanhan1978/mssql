@@ -45,6 +45,7 @@ int execute_query(char * sql){
   /* bind selected value  */
   int colnum = dbnumcols(dbconn);
   if(colnum <= 0){
+      printf("Empty set\n\n");
       return 1;
   }
 
@@ -71,6 +72,7 @@ int execute_query(char * sql){
   struct result_node * head2 = NULL;
   struct result_node * temp2 = NULL;
 
+  int rows = 0;
   while (dbnextrow(dbconn) != NO_MORE_ROWS) {
     for(i=0; i<colnum ;i++){
         temp2 = add_node(val[i], temp2);
@@ -81,6 +83,7 @@ int execute_query(char * sql){
             maxlength[i] = (int)strlen(val[i]);
         }
     }
+    rows++;
   }
 
   //print result
@@ -89,6 +92,7 @@ int execute_query(char * sql){
   print_boundary(maxlength, colnum);
   print_result(head2, maxlength, colnum);
   print_boundary(maxlength, colnum);
+  printf("%d rows in set\n\n", rows);
 
   return 1;
 }
