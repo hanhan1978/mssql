@@ -73,7 +73,8 @@ char * my_readline(void) {
             return NULL;
         }
         sql = trans_dialect(line);
-        printf("\n\nSQL EXECUTE : %s\n", sql);
+        eprintf("\nSQL EXECUTE : %s\n", sql);
+        printf("\n");
         if (execute_query(sql) > 0){
             add_history(line);
             write_history(history_file);
