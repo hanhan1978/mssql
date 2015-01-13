@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if (!set_cmd_option( argc, argv, dbinfo)){
         return 0;
     }
-    //eprintf("%s %s %s %s\n", dbconf.hostname, dbconf.password, dbconf.username, dbconf.database);
+    //eprintf("%s %s %s %s\n", dbinfo->hostname, dbinfo->password, dbinfo->username, dbinfo->database);
     if (!connect_db(dbinfo)){
         return 0;
     }
