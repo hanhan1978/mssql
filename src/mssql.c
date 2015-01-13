@@ -15,6 +15,11 @@ char *my_readline(void);
 int my_eoq; 
 
 int main(int argc, char *argv[]) {
+
+    if(argc <= 1){
+        show_usage();
+        return 0;
+    }
  
     dbinfo = (struct dbconfig *)malloc( sizeof(struct dbconfig) );
     if (!set_cmd_option( argc, argv, dbinfo)){

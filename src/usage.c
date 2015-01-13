@@ -3,7 +3,7 @@
 #include "mssql.h"
 
 void show_usage(){
-    printf("mssql Ver %s\n", VERSION);
+    printf("mssql Version %s\n", VERSION);
     printf("Usage: mssql -h {hostname} -u {username} -p {password} {database}\n");
     printf("required arguments:\n");
     printf("    -h          hostname\n");
