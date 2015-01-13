@@ -23,6 +23,7 @@ void set_login(struct dbconfig *dbconf);
 int set_dbprocess(struct dbconfig *dbconf);
 void print_result(struct result_node * node, int * length, int col_size);
 void print_boundary(int * col_length, int col_size);
+void free_result(struct result_node *node);
 node * add_node(char * value, struct result_node * tail);
 
 int connect_db(){
@@ -94,6 +95,8 @@ int execute_query(char * sql){
   print_boundary(maxlength, colnum);
   printf("%d rows in set\n\n", rows);
 
+  free_result(head);
+  free_result(head2);
   return 1;
 }
 
@@ -115,7 +118,8 @@ void set_login(struct dbconfig *dbconf){
 int set_dbprocess(struct dbconfig *dbconf){
     if ((dbconn = dbopen(login, dbconf->hostname)) != NULL){
         printf("Welcome to the SqlServer monitor.  Commands end with ; or \\g.\n");
-        printf("Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement.\n");
+        printf("Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement.\n\n");
+        printf("Connected to default database => [%s] \n", dbname(dbconn));
         return 1;
     }
     printf("Access denied for user '%s' (using password: YES)\n", dbconf->username);
@@ -160,5 +164,17 @@ void print_result(struct result_node * node, int * col_length, int col_size){
         }else{
           col++;
         }
+    }
+}
+
+
+void free_result(struct result_node *node){
+    struct result_node * it = node;
+    struct result_node * nxt;
+    while(it != NULL ){
+        free(it->value);
+        nxt = it->next;
+        free(it);
+        it = nxt;
     }
 }

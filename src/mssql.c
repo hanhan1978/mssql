@@ -93,9 +93,9 @@ char * trans_dialect(char * line){
     char * sql = (char *)malloc(1024);
     struct slre_cap caps[4];
     if (slre_match("^show databases\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        strcpy(sql,"SELECT name FROM master.dbo.sysdatabases WHERE dbid > 4 ");
+        strcpy(sql,"SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 ");
     }else if (slre_match("^show tables\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        strcpy(sql,"SELECT name FROM sysobjects WHERE xtype = 'U'");
+        strcpy(sql,"SELECT name AS Tables FROM sysobjects WHERE xtype = 'U'");
     }else{
         strcpy(sql, line);
     }
