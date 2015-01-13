@@ -26,9 +26,22 @@ brew install ncurses-devel
 yum install ncurses-devel
 ```
 
+##readline
+(1) for mac  
+```
+brew install readline-devel
+```
+(2) for centos  
+```
+yum install readline-devel
+```
+
 installation
 ==========
-just type  
-`make`  
+```
+cd src
+./configure
+make
+```  
   
 executable binary will be created in bin directory.
