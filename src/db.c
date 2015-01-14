@@ -138,10 +138,11 @@ node * add_node(char * value, struct result_node * tail){
 }
 
 void print_boundary(int * col_length, int col_size){
-    int col =0;
+    int col = 0;
+    int i = 0;
     for( col=0; col < col_size; col++){
         printf("+");
-        for(int i=0; i<col_length[col] +2; i++){
+        for(i=0; i<col_length[col] +2; i++){
           printf("-");
         }
     }
@@ -150,10 +151,11 @@ void print_boundary(int * col_length, int col_size){
 
 void print_result(struct result_node * node, int * col_length, int col_size){
     int col = 0;
+    int i = 0;
     struct result_node * it = node;
     while(it != NULL ){
         printf("| %s", it->value);
-        for(int i =0; i<(col_length[col] - strlen(it->value)) ; i++){
+        for(i =0; i<(col_length[col] - strlen(it->value)) ; i++){
             printf(" ");
         }
         printf(" ");
