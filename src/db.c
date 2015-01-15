@@ -117,7 +117,7 @@ void set_login(struct dbconfig *dbconf){
 
 int set_dbprocess(struct dbconfig *dbconf){
     if ((dbconn = dbopen(login, dbconf->hostname)) != NULL){
-        printf("Welcome to the SqlServer monitor.  Commands end with ;");
+        printf("Welcome to the SqlServer monitor.  Commands end with ;\n");
         printf("Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement.\n\n");
         printf("Connected to default database => [%s] \n", dbname(dbconn));
         return 1;

@@ -90,14 +90,49 @@ char * my_readline(void) {
 
 
 char * trans_dialect(char * line){
-    char * sql = (char *)malloc(1024);
+    char * sql;
+    char * sqlstr ;
     struct slre_cap caps[4];
     if (slre_match("^show databases\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        strcpy(sql,"SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 ");
+        sqlstr = "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 ";
     }else if (slre_match("^show tables\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        strcpy(sql,"SELECT name AS Tables FROM sysobjects WHERE xtype = 'U'");
+        sqlstr = "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U'";
+    }else if (slre_match("^show processlist\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        sqlstr = " SELECT "
+            "es.session_id AS sess_id, "
+            "er.request_id AS req_id, "
+            "er.command, "
+            "es.status, "
+            "DB_NAME(DB_ID()) AS database_name, "
+            "er.wait_time, "
+            "er.open_resultset_count AS result_set, "
+            "es.total_elapsed_time AS elapsed_time, "
+            "es.cpu_time, "
+            "es.memory_usage, "
+            "es.lock_timeout, "
+            "es.host_name, "
+            "es.program_name, "
+            "es.login_name "
+         " FROM "
+            "sys.dm_exec_sessions es "
+            "LEFT JOIN "
+            "sys.dm_exec_requests er "
+            "ON "
+            "es.session_id = er.session_id "
+            "LEFT JOIN "
+            "(SELECT * FROM sys.dm_exec_connections WHERE most_recent_sql_handle <> 0x0) AS ec "
+            "ON "
+            "es.session_id = ec.session_id "
+            "OUTER APPLY "
+            "sys.dm_exec_sql_text(er.sql_handle) AS er_text "
+            "OUTER APPLY "
+            "sys.dm_exec_sql_text(ec.most_recent_sql_handle) AS ec_text "
+         " WHERE "
+            "es.session_id <> @@SPID "
+         " ORDER BY "
+            "sess_id ASC ";
     }else if (slre_match("^descr?i?b?e? ([^;\\s]+)\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        sprintf(sql,"SELECT " 
+        sprintf(sqlstr,"SELECT " 
         "    c.name 'Column Name',"
         "    t.Name 'Data type',"
         "    c.max_length 'Max Length',"
@@ -115,7 +150,12 @@ char * trans_dialect(char * line){
         "    sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id "
         "WHERE"
         "    c.object_id = OBJECT_ID('%.*s')", caps[0].len, caps[0].ptr);
+    }
+    if (sqlstr) {
+        sql = (char *)malloc(strlen(sqlstr));
+        strcpy(sql, sqlstr);
     }else{
+        sql = (char *)malloc(strlen(line));
         strcpy(sql, line);
     }
     return sql;
