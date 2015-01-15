@@ -25,6 +25,8 @@ void print_result(struct result_node * node, int * length, int col_size);
 void print_boundary(int * col_length, int col_size);
 void free_result(struct result_node *node);
 node * add_node(char * value, struct result_node * tail);
+int err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr); 
+int msg_handler(DBPROCESS *dbproc, long msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
 
 int connect_db(){
   set_login(dbinfo);
@@ -35,9 +37,10 @@ int connect_db(){
 int execute_query(char * sql){
 
   dbcmd(dbconn, sql);
+  //dberrhandle(err_handler);
+  dbmsghandle(msg_handler);
 
   if (dbsqlexec(dbconn) == FAIL) {
-    printf("\nCould not execute the sql statement\n");
     return 0;
   }
   dbresults(dbconn); 
@@ -180,3 +183,30 @@ void free_result(struct result_node *node){
         it = nxt;
     }
 }
+
+
+int err_handler( DBPROCESS    *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr )
+{ 
+      if ((dbproc == NULL) || (DBDEAD(dbproc))) 
+           return(INT_EXIT); 
+      else  
+      { 
+           printf("DB-Library error:\n\t%s\n",
+                dberrstr); 
+           if (oserr != DBNOERR) 
+                printf("Operating-system \
+                     error:\n\t%s\n", oserrstr); 
+           return(INT_CANCEL); 
+      } 
+ } 
+
+
+int msg_handler(DBPROCESS *dbproc, long msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line)
+ { 
+       printf("ERROR %ld : %s", msgno, msgtext); 
+       if (line > 0) 
+           printf (" at line %d", line); 
+       printf("\n\n");
+ 
+       return(0); 
+ } 
