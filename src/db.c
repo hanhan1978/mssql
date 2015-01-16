@@ -26,7 +26,7 @@ void print_boundary(int * col_length, int col_size);
 void free_result(struct result_node *node);
 node * add_node(char * value, struct result_node * tail);
 int err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr); 
-int msg_handler(DBPROCESS *dbproc, long msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
+int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
 
 int connect_db(){
   set_login(dbinfo);
@@ -45,11 +45,9 @@ int execute_query(char * sql){
   }
   dbresults(dbconn); 
 
-
   /* bind selected value  */
   int colnum = dbnumcols(dbconn);
   if(colnum <= 0){
-      printf("Empty set\n\n");
       return 1;
   }
 
@@ -96,7 +94,11 @@ int execute_query(char * sql){
   print_boundary(maxlength, colnum);
   print_result(head2, maxlength, colnum);
   print_boundary(maxlength, colnum);
-  printf("%d rows in set\n\n", rows);
+  if(rows > 0){
+      printf("%d rows in set\n\n", rows);
+  }else{
+      printf("Empty set\n\n");
+  }
 
   free_result(head);
   free_result(head2);
@@ -201,9 +203,13 @@ int err_handler( DBPROCESS    *dbproc, int severity, int dberr, int oserr, char 
  } 
 
 
-int msg_handler(DBPROCESS *dbproc, long msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line)
+int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line)
  { 
-       printf("ERROR %ld : %s", msgno, msgtext); 
+       if(msgno == 5701){
+           printf ("\nDatabase changed\n");
+           return 0;
+       }
+       printf("ERROR %d : %s", msgno, msgtext); 
        if (line > 0) 
            printf (" at line %d", line); 
        printf("\n\n");

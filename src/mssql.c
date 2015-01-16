@@ -92,6 +92,7 @@ char * my_readline(void) {
 char * trans_dialect(char * line){
     char * sql;
     char * sqlstr ;
+    int freeflag = 0;
     struct slre_cap caps[4];
     if (slre_match("^show databases\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
         sqlstr = "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 ";
@@ -132,6 +133,7 @@ char * trans_dialect(char * line){
          " ORDER BY "
             "sess_id ASC ";
     }else if (slre_match("^descr?i?b?e? ([^;\\s]+)\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        sqlstr = (char *)malloc(1024);
         sprintf(sqlstr,"SELECT " 
         "    c.name 'Column Name',"
         "    t.Name 'Data type',"
@@ -150,10 +152,15 @@ char * trans_dialect(char * line){
         "    sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id "
         "WHERE"
         "    c.object_id = OBJECT_ID('%.*s')", caps[0].len, caps[0].ptr);
+        freeflag = 1;
+    }else{
+        sqlstr=NULL;
     }
+
     if (sqlstr) {
         sql = (char *)malloc(strlen(sqlstr));
         strcpy(sql, sqlstr);
+        if(freeflag) free(sqlstr);
     }else{
         sql = (char *)malloc(strlen(line));
         strcpy(sql, line);
