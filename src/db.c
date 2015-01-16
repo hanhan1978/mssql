@@ -25,6 +25,7 @@ void print_result(struct result_node * node, int * length, int col_size);
 void print_boundary(int * col_length, int col_size);
 void free_result(struct result_node *node);
 node * add_node(char * value, struct result_node * tail);
+void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size);
 int err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr); 
 int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
 
@@ -62,12 +63,16 @@ int execute_query(char * sql){
   struct result_node * head = NULL;
   struct result_node * temp = NULL;
 
+  int max_collength = 0;
   for(i=0; i<colnum ;i++){
     temp = add_node(dbcolname(dbconn,i+1), temp);
     if(head == NULL){
         head = temp;
     }
     maxlength[i] = (int)strlen(dbcolname(dbconn,i+1));
+    if(max_collength < (int)strlen(dbcolname(dbconn,i+1))){
+        max_collength = (int)strlen(dbcolname(dbconn,i+1));
+    }
   }
 
 
@@ -87,13 +92,16 @@ int execute_query(char * sql){
     }
     rows++;
   }
-
-  //print result
-  print_boundary(maxlength, colnum);
-  print_result(head, maxlength, colnum);
-  print_boundary(maxlength, colnum);
-  print_result(head2, maxlength, colnum);
-  print_boundary(maxlength, colnum);
+  if(pretty_print){
+      print_pretty(head, head2, max_collength, colnum);
+  }else{
+      //print result
+      print_boundary(maxlength, colnum);
+      print_result(head, maxlength, colnum);
+      print_boundary(maxlength, colnum);
+      print_result(head2, maxlength, colnum);
+      print_boundary(maxlength, colnum);
+  }
   if(rows > 0){
       printf("%d rows in set\n\n", rows);
   }else{
@@ -122,7 +130,7 @@ void set_login(struct dbconfig *dbconf){
 
 int set_dbprocess(struct dbconfig *dbconf){
     if ((dbconn = dbopen(login, dbconf->hostname)) != NULL){
-        printf("Welcome to the SqlServer monitor.  Commands end with ;\n");
+        printf("Welcome to the SqlServer monitor.  Commands end with ; or \\g.\n");
         printf("Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement.\n\n");
         printf("Connected to default database => [%s] \n", dbname(dbconn));
         return 1;
@@ -152,6 +160,27 @@ void print_boundary(int * col_length, int col_size){
         }
     }
     printf("+\n");
+}
+
+void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size){
+    int col = 0;
+    int i=0;
+    struct result_node * it = node;
+    struct result_node * ht; 
+
+    while(it != NULL ){
+        if(col % col_size == 0){
+            ht = hnode; 
+            printf("*************************** %d. row ***************************\n", (col+col_size+1) / col_size);
+        }
+        for(i =0; i<(max_col_size - strlen(ht->value)) ; i++){
+            printf(" ");
+        }
+        printf("%s : %s\n", ht->value, it->value);
+        it = it->next;
+        ht = ht->next;
+        col++;
+    }
 }
 
 void print_result(struct result_node * node, int * col_length, int col_size){

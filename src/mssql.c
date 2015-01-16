@@ -13,6 +13,7 @@ int my_bind_eoq(int, int);
 char *my_readline(void);
 
 int my_eoq; 
+int exit_flag = 0;
 
 int main(int argc, char *argv[]) {
 
@@ -51,8 +52,11 @@ int my_startup(void) {
 
 int my_bind_cr(int count, int key) {
     struct slre_cap caps[4];
-    if (my_eoq == 1 || slre_match(";\\s*$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
+    if (my_eoq == 1 || slre_match("(\\\\G|;)\\s*$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, SLRE_IGNORE_CASE) > 0){
         rl_done = 1;
+        return 1;
+    } else if( slre_match("^(\\\\q|exit)$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
+        rl_done = 1;exit_flag=1;
         return 1;
     }
     if (strcmp( rl_line_buffer , "") == 0 || slre_match("^\\s+$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
@@ -77,11 +81,15 @@ char * my_readline(void) {
         if ((line = readline("mssql> ")) == NULL) {
             return NULL;
         }
+        if(exit_flag){
+            printf("\nBye\n");
+            exit(0);
+        }
+        add_history(line);
         sql = trans_dialect(line);
         eprintf("\nSQL EXECUTE : %s\n", sql);
         printf("\n");
         if (execute_query(sql) > 0){
-            add_history(line);
             write_history(history_file);
         }
         free(sql);
@@ -93,7 +101,18 @@ char * trans_dialect(char * line){
     char * sql;
     char * sqlstr ;
     int freeflag = 0;
+    pretty_print=0;
     struct slre_cap caps[4];
+    //check for print type
+    if(slre_match("\\\\G\\s*;?$", line, strlen(line), caps, 4, 0) > 0) {
+        pretty_print = 1;
+        char * pos = strstr(line, "\\G");
+        * pos = '\0';
+    }else if(slre_match("\\\\g\\s*;?$", line, strlen(line), caps, 4, 0) > 0) {
+        char * pos = strstr(line, "\\g");
+        * pos = '\0';
+    }
+
     if (slre_match("^show databases\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
         sqlstr = "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 ";
     }else if (slre_match("^show tables\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {

@@ -18,6 +18,8 @@ typedef struct dbconfig{
 
 struct dbconfig * dbinfo;
 
+int pretty_print;
+
 int my_startup(void);
 int my_bind_cr(int, int);
 int my_bind_eoq(int, int);
