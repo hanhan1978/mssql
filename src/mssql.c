@@ -99,26 +99,16 @@ char * my_readline(void) {
 
 char * trans_dialect(char * line){
     char * sql;
-    char * sqlstr ;
-    int freeflag = 0;
+    char * sqlstr = (char *)malloc(2048); ;
     pretty_print=0;
     struct slre_cap caps[4];
-    //check for print type
-    if(slre_match("\\\\G\\s*;?$", line, strlen(line), caps, 4, 0) > 0) {
-        pretty_print = 1;
-        char * pos = strstr(line, "\\G");
-        * pos = '\0';
-    }else if(slre_match("\\\\g\\s*;?$", line, strlen(line), caps, 4, 0) > 0) {
-        char * pos = strstr(line, "\\g");
-        * pos = '\0';
-    }
 
-    if (slre_match("^show databases\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        sqlstr = "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 ";
-    }else if (slre_match("^show tables\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        sqlstr = "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U'";
-    }else if (slre_match("^show processlist\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        sqlstr = " SELECT "
+    if (slre_match("^show databases\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        sprintf(sqlstr, "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 %s", caps[0].ptr);
+    }else if (slre_match("^show tables\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        sprintf(sqlstr, "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U' %s", caps[0].ptr);
+    }else if (slre_match("^show processlist\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        sprintf(sqlstr, " SELECT "
             "es.session_id AS sess_id, "
             "er.request_id AS req_id, "
             "er.command, "
@@ -150,9 +140,8 @@ char * trans_dialect(char * line){
          " WHERE "
             "es.session_id <> @@SPID "
          " ORDER BY "
-            "sess_id ASC ";
-    }else if (slre_match("^descr?i?b?e? ([^;\\s]+)\\s*;\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
-        sqlstr = (char *)malloc(1024);
+            "sess_id ASC %s", caps[0].ptr);
+    }else if (slre_match("^descr?i?b?e? ([^;\\s\\\\]+)\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
         sprintf(sqlstr,"SELECT " 
         "    c.name 'Column Name',"
         "    t.Name 'Data type',"
@@ -170,8 +159,7 @@ char * trans_dialect(char * line){
         "LEFT OUTER JOIN "
         "    sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id "
         "WHERE"
-        "    c.object_id = OBJECT_ID('%.*s')", caps[0].len, caps[0].ptr);
-        freeflag = 1;
+        "    c.object_id = OBJECT_ID('%.*s') %.*s", caps[0].len, caps[0].ptr, caps[1].len, caps[1].ptr);
     }else{
         sqlstr=NULL;
     }
@@ -179,10 +167,19 @@ char * trans_dialect(char * line){
     if (sqlstr) {
         sql = (char *)malloc(strlen(sqlstr));
         strcpy(sql, sqlstr);
-        if(freeflag) free(sqlstr);
+        free(sqlstr);
     }else{
         sql = (char *)malloc(strlen(line));
         strcpy(sql, line);
+    }
+    //check for print type
+    if(slre_match("\\\\G\\s*;?$", sql, strlen(sql), caps, 4, 0) > 0) {
+        pretty_print = 1;
+        char * pos = strstr(sql, "\\G");
+        * pos = '\0';
+    }else if(slre_match("\\\\g\\s*;?$", sql, strlen(sql), caps, 4, 0) > 0) {
+        char * pos = strstr(sql, "\\g");
+        * pos = '\0';
     }
     return sql;
 }

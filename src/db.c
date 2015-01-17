@@ -171,7 +171,7 @@ void print_pretty(struct result_node * hnode, struct result_node * node, int max
     while(it != NULL ){
         if(col % col_size == 0){
             ht = hnode; 
-            printf("*************************** %d. row ***************************\n", (col+col_size+1) / col_size);
+            printf("*************************** %d. row ***************************\n", (col/col_size)+1);
         }
         for(i =0; i<(max_col_size - strlen(ht->value)) ; i++){
             printf(" ");
