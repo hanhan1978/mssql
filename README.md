@@ -7,10 +7,10 @@ current version provide these features :
 2. some of mysql query dialect (shown below)
 
 ## supported mysql dialect
-show databases
-show tables
-describe [table_name]
-show processlist
+show databases  
+show tables  
+describe [table_name]  
+show processlist  
 
 Installation
 ==========
