@@ -13,3 +13,4 @@ src/config.status
 src/config.log
 src/config.h
 src/Makefile
+src/autom4te.cache
