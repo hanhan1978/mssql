@@ -34,3 +34,5 @@ makedir:
 clean:
 	rm *.o
 
+install:
+	mv ./bin/mssql /usr/local/bin
