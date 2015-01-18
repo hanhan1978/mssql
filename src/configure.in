@@ -14,9 +14,18 @@ AC_PROG_CC
 AC_CHECK_HEADERS([stdlib.h string.h sys/param.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_LIB(sybdb, dbopen)
-AC_CHECK_LIB(ncurses, mvwin)
-AC_CHECK_LIB(readline, rl_bind_key)
+AC_CHECK_LIB(sybdb, dbopen, [], [
+        echo "Error! freetds-devel is required."
+        exit -1
+        ])
+AC_CHECK_LIB(ncurses, mvwin, [], [
+        echo "Error! ncurses-devel is required."
+        exit -1
+        ])
+AC_CHECK_LIB(readline, rl_bind_key, [], [
+        echo "Error! readline-devel is required." 
+        exit -1
+        ])
 
 # Checks for library functions.
 AC_FUNC_MALLOC

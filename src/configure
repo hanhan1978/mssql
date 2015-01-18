@@ -3336,6 +3336,11 @@ _ACEOF
 
   LIBS="-lsybdb $LIBS"
 
+else
+
+        echo "Error! freetds-devel is required."
+        exit -1
+
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for mvwin in -lncurses" >&5
@@ -3381,6 +3386,11 @@ _ACEOF
 
   LIBS="-lncurses $LIBS"
 
+else
+
+        echo "Error! ncurses-devel is required."
+        exit -1
+
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for rl_bind_key in -lreadline" >&5
@@ -3425,6 +3435,11 @@ if test "x$ac_cv_lib_readline_rl_bind_key" = xyes; then :
 _ACEOF
 
   LIBS="-lreadline $LIBS"
+
+else
+
+        echo "Error! readline-devel is required."
+        exit -1
 
 fi
 
