@@ -14,9 +14,9 @@ show processlist
 
 Installation
 ==========
-./configure
-make
-sudo make install
+./configure  
+make  
+sudo make install  
 
 ## for Mac user
 install readline with brew
