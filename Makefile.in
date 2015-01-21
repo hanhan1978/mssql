@@ -32,7 +32,7 @@ makedir:
 
 .PHONY: clean
 clean:
-	rm -f *.o config.status config.log ;
+	rm -rf *.o config.status config.log Makefile bin;
 
 install:
 	mv ./bin/mssql /usr/local/bin
