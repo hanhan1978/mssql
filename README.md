@@ -2,46 +2,27 @@ mssql
 =========
 mssql is a command line SQL Server Client.  
   
-current version provide features below :  
-basic CRUD sql execution to specific database.  
+current version provide these features :  
+1. basic CRUD sql execution to specific database.  
+2. some of mysql query dialect (shown below)
 
-prerequistes
+## supported mysql dialect
+show databases  
+show tables  
+describe [table_name]  
+show processlist  
+
+Installation
 ==========
+./configure  
+make  
+sudo make install  
 
-##freetds
-(1) for mac  
-http://www.acloudtree.com/how-to-install-freetds-and-unixodbc-on-osx-using-homebrew-for-use-with-ruby-php-and-perl/  
-(2) for centos  
-```
-yum install freetds-devel
-```
+## for Mac user
+install readline with brew
+edit Makefile.in and add following to LINE8
 
-##curses
-(1) for mac  
 ```
-brew install ncurses-devel
+-L/usr/local/Cellar/readline/6.3.3/lib
 ```
-(2) for centos  
-```
-yum install ncurses-devel
-```
-
-##readline
-(1) for mac  
-```
-brew install readline-devel
-```
-(2) for centos  
-```
-yum install readline-devel
-```
-
-installation
-==========
-```
-cd src
-./configure
-make
-```  
-  
-executable binary will be created in bin directory.
+readline version might be different.
