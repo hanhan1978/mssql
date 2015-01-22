@@ -1,11 +1,12 @@
 CC=@CC@
 LIBS=@LIBS@
+LDFLAGS=@LDFLAGS@
 #CFLAGS    = -g -O0 -ggdb
 
-all: mssql makedir move clean
+all: mssql makedir move obclean
 
 mssql: mssql.o usage.o option.o slre.o db.o
-	${CC} -o mssql mssql.o usage.o option.o slre.o db.o -L/usr/local/Cellar/readline/6.3.3/lib ${LIBS}
+	${CC} -o mssql mssql.o usage.o option.o slre.o db.o ${LDFLAGS} ${LIBS}
 
 mssql.o: 
 	${CC} -c mssql.c
@@ -33,6 +34,10 @@ makedir:
 .PHONY: clean
 clean:
 	rm -rf *.o config.status config.log Makefile bin;
+
+.PHONY: obclean
+obclean:
+	rm -rf *.o ;
 
 install:
 	mv ./bin/mssql /usr/local/bin
