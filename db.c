@@ -141,7 +141,7 @@ int set_dbprocess(struct dbconfig *dbconf){
 
 node * add_node(char * value, struct result_node * tail){
     struct result_node * node = (struct result_node *)malloc( sizeof(struct result_node) );
-    node->value = (char *)malloc(256);
+    node->value = (char *)malloc(1024);
     strcpy(node->value, value);
     node->next = NULL;
     if(tail != NULL){
