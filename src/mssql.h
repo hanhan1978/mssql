@@ -1,7 +1,6 @@
 
 
 
-#define  VERSION   "0.0.2"
 #define  CHARSET   "utf8"
 #define  PROGNAME  "DemoProg"
 #define  HISTORY_FILE_NAME  "/.mssql_history"

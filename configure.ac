@@ -3,7 +3,9 @@
 
 AC_PREREQ([2.69])
 AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
-AC_CONFIG_SRCDIR([db.c])
+AM_INIT_AUTOMAKE(mssql, 0.1)
+AC_OUTPUT(Makefile src/Makefile)
+AC_CONFIG_SRCDIR([src])
 
 # Checks for programs.
 AC_PROG_CC
@@ -31,5 +33,5 @@ AC_CHECK_LIB(readline, rl_digit_argument, [], [
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([gethostname strchr])
 
-AC_CONFIG_FILES([Makefile])
+#AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
