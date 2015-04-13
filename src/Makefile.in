@@ -93,6 +93,8 @@ am_mssql_OBJECTS = db.$(OBJEXT) mssql.$(OBJEXT) option.$(OBJEXT) \
 	slre.$(OBJEXT) usage.$(OBJEXT)
 mssql_OBJECTS = $(am_mssql_OBJECTS)
 mssql_LDADD = $(LDADD)
+mssql_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(mssql_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -174,7 +176,7 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-LDFLAGS = 
+LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
@@ -236,6 +238,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 mssql_SOURCES = db.c mssql.c mssql.h option.c slre.c slre.h usage.c
+mssql_LDFLAGS = $(LDFLAGS)
 all: all-am
 
 .SUFFIXES:
@@ -315,7 +318,7 @@ clean-binPROGRAMS:
 
 mssql$(EXEEXT): $(mssql_OBJECTS) $(mssql_DEPENDENCIES) $(EXTRA_mssql_DEPENDENCIES) 
 	@rm -f mssql$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(mssql_OBJECTS) $(mssql_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(mssql_LINK) $(mssql_OBJECTS) $(mssql_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

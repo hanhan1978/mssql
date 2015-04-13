@@ -107,6 +107,13 @@ char * trans_dialect(char * line){
         sprintf(sqlstr, "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 %s", caps[0].ptr);
     }else if (slre_match("^show tables\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
         sprintf(sqlstr, "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U' %s", caps[0].ptr);
+    }else if (slre_match("^show tables\\s+like\\s+([%'\"a-z]+)(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        char * tmp = (char *)malloc(1024);
+        strncpy(tmp, caps[0].ptr, caps[0].len);
+        sprintf(sqlstr, "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U' AND name LIKE %s ORDER BY name;", tmp);
+        free(tmp);
+    }else if (slre_match("^show tables\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        sprintf(sqlstr, "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U' ORDER BY name %s", caps[0].ptr);
     }else if (slre_match("^show processlist\\s*(\\\\g;?|;)\\s*$", line, strlen(line), caps, 4, SLRE_IGNORE_CASE) > 0) {
         sprintf(sqlstr, " SELECT "
             "es.session_id AS sess_id, "
