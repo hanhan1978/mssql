@@ -90,7 +90,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_mssql_OBJECTS = db.$(OBJEXT) mssql.$(OBJEXT) option.$(OBJEXT) \
-	slre.$(OBJEXT) usage.$(OBJEXT)
+	slre.$(OBJEXT) usage.$(OBJEXT) trans.$(OBJEXT)
 mssql_OBJECTS = $(am_mssql_OBJECTS)
 mssql_LDADD = $(LDADD)
 mssql_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(mssql_LDFLAGS) \
@@ -237,7 +237,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mssql_SOURCES = db.c mssql.c mssql.h option.c slre.c slre.h usage.c
+mssql_SOURCES = db.c mssql.c mssql.h option.c slre.c slre.h usage.c trans.c
 mssql_LDFLAGS = $(LDFLAGS)
 all: all-am
 
@@ -330,6 +330,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mssql.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/option.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/slre.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trans.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usage.Po@am__quote@
 
 .c.o:
