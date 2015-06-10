@@ -13,6 +13,15 @@ TEST(SetConstructTest, ConstructFromArray)
     printf("%s¥n", resquery);
 }
 
+TEST(SetConstructTest, ConstructFromArray)
+{
+    char * testquery = (char *)malloc(2048);
+    char * resquery  = (char *)malloc(2048);
+    sprintf(testquery, "show tables;");
+    resquery = trans_dialect(testquery);
+    printf("%s¥n", resquery);
+}
+
 
 int main(int argc, char **argv)
 {
