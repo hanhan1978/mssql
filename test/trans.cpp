@@ -7,18 +7,18 @@ extern "C"
 
 using ::testing::StartsWith;
 
-TEST(SetConstructTest, ConstructFromArray)
+TEST(QueryTranslateTest, ShowTables)
 {
     char * testquery = (char *)malloc(2048);
     char * resquery  = (char *)malloc(2048);
     sprintf(testquery, "show tables;");
     resquery = trans_dialect(testquery);
-    printf("%s¥n", resquery);
+    EXPECT_THAT(resquery, StartsWith("SELECT name AS Tables FROM sysobjects"));
 }
 
 TEST(SetConstructTest2, ConstructFromArray2)
 {
-    EXPECT_THAT("Helle", StartsWith("Hello"));
+    EXPECT_THAT("Hello", StartsWith("Hello"));
 }
 
 
