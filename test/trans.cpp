@@ -16,9 +16,13 @@ TEST(QueryTranslateTest, ShowTables)
     EXPECT_THAT(resquery, StartsWith("SELECT name AS Tables FROM sysobjects"));
 }
 
-TEST(SetConstructTest2, ConstructFromArray2)
+TEST(QueryTranslateTest, ShowDatabases)
 {
-    EXPECT_THAT("Hello", StartsWith("Hello"));
+    char * testquery = (char *)malloc(2048);
+    char * resquery  = (char *)malloc(2048);
+    sprintf(testquery, "show databases;");
+    resquery = trans_dialect(testquery);
+    EXPECT_THAT(resquery, StartsWith("SELECT name AS DBName FROM master.dbo.sysdatabases"));
 }
 
 
