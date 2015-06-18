@@ -5,8 +5,8 @@
 #define  PROGNAME  "DemoProg"
 #define  HISTORY_FILE_NAME  "/.mssql_history"
 
-/*#define eprintf(...) fprintf(stderr, __VA_ARGS__) */
-#define eprintf(...) do {} while(0) 
+#define eprintf(...) fprintf(stderr, __VA_ARGS__) 
+//#define eprintf(...) do {} while(0) 
 
 typedef struct dbconfig{
     char *username;
@@ -36,3 +36,5 @@ void show_usage();
 void show_version();
 
 int is_pretty(char *line);
+char * format_string(char * sql);
+char * trim_by_pointer(char * str, const char * point);

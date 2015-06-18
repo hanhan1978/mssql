@@ -6,6 +6,7 @@ extern "C"
 }
 
 using ::testing::StartsWith;
+using ::testing::StrEq;
 
 TEST(QueryTranslateTest, ShowTables)
 {
@@ -23,6 +24,27 @@ TEST(QueryTranslateTest, ShowDatabases)
     sprintf(testquery, "show databases;");
     resquery = trans_dialect(testquery);
     EXPECT_THAT(resquery, StartsWith("SELECT name AS DBName FROM master.dbo.sysdatabases"));
+}
+
+TEST(TransFunctionTest, TestFormatString)
+{
+    char * sql = (char *)malloc(128);
+    sprintf(sql, "show databases;");
+    sql = format_string(sql);
+    EXPECT_THAT(sql, StrEq("show databases"));
+
+
+    sprintf(sql, "show databases\\g;");
+    format_string(sql);
+    EXPECT_THAT(sql, StrEq("show databases"));
+
+    sprintf(sql, "show databases \\g; ");
+    format_string(sql);
+    EXPECT_THAT(sql, StrEq("show databases"));
+
+    sprintf(sql, "show databases ; ");
+    sql = format_string(sql);
+    EXPECT_THAT(sql, StrEq("show databases"));
 }
 
 TEST(TransFunctionTest, TestIsPretty)

@@ -12,6 +12,25 @@ int is_pretty(char *sql){
     return 0;
 }
 
+char * format_string(char * sql){
+    struct slre_cap caps[4];
+    if(slre_match("(\\s?\\\\?g?;?)\\s?$", sql, strlen(sql), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        trim_by_pointer(sql, caps[0].ptr);
+    }
+    return sql;
+}
+
+char * trim_by_pointer(char * str, const char * point){
+    int i = 0;
+    while(1){
+        if(&str[i] >= point || str[i] == '\0'){
+            str[i] = '\0';
+            break;
+        }
+        i++;
+    }
+    return str;
+}
 
 char * trans_dialect(char * line){
     char * sql;
