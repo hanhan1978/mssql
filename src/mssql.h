@@ -34,3 +34,5 @@ int execute_query(char * sql);
 
 void show_usage();
 void show_version();
+
+int is_pretty(char *line);

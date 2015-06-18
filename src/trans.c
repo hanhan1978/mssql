@@ -4,16 +4,14 @@
 #include "mssql.h"
 #include "slre.h"
 
-int is_pretty(char *line){
-    if(slre_match("\\\\G\\s*;?$", sql, strlen(sql), caps, 4, 0) > 0) {
-        pretty_print = 1;
-        char * pos = strstr(sql, "\\G");
-        * pos = '\0';
-    }else if(slre_match("\\\\g\\s*;?$", sql, strlen(sql), caps, 4, 0) > 0) {
-        char * pos = strstr(sql, "\\g");
-        * pos = '\0';
+int is_pretty(char *sql){
+    struct slre_cap caps[4];
+    if(slre_match("\\\\G\\s*;?\\s*?$", sql, strlen(sql), caps, 4, SLRE_IGNORE_CASE) > 0) {
+        return 1;
     }
+    return 0;
 }
+
 
 char * trans_dialect(char * line){
     char * sql;

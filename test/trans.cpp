@@ -25,6 +25,40 @@ TEST(QueryTranslateTest, ShowDatabases)
     EXPECT_THAT(resquery, StartsWith("SELECT name AS DBName FROM master.dbo.sysdatabases"));
 }
 
+TEST(TransFunctionTest, TestIsPretty)
+{
+    char * str = (char *)malloc(1024);
+    sprintf(str, "SELECT * FROM fuga\\G");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga\\g");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga\\G;");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga\\g;");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga \\G");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga\\G ");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga \\G ");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga \\G;");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga\\G; ");
+    ASSERT_TRUE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga \\G; ");
+    ASSERT_TRUE(is_pretty(str));
+
+    sprintf(str, "SELECT * FROM fuga;");
+    ASSERT_FALSE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga ;");
+    ASSERT_FALSE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga; ");
+    ASSERT_FALSE(is_pretty(str));
+    sprintf(str, "SELECT * FROM fuga ; ");
+    ASSERT_FALSE(is_pretty(str));
+}
+
 
 int main(int argc, char **argv)
 {
