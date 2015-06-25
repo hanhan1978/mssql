@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hanhan1978/mssql.svg?branch=master)](https://travis-ci.org/hanhan1978/mssql)
+
 mssql
 =========
 mssql is a command line SQL Server Client.  
