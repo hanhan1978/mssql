@@ -3,15 +3,16 @@ compiler:
   - clang
 before_install:
  - sudo apt-get update
- - sudo apt-get install libgtest-dev
- - "cd /usr/src/gtest && sudo cmake . && sudo cmake --build . && sudo mv libg* /usr/local/lib/ ; cd -"
- - "ls -la /usr/local/lib/ | grep libg"
+ - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googletest.googlecode.com/svn/trunk gtest && cd build && cmake .. && make"
+ - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googlemock.googlecode.com/svn/trunk gmock && autoreconf -fvi && cd make && make"
+ - "cd $TRAVIS_BUILD_DIR/test && make"
 #before_script:
 # - pwd
 # - cd samples/STL/
 # - pwd
 # - which sh
-#script: "sh ./.travis_build.sh && cd ../../test/ && sh ./.travis_build.sh"
+script: 
+  - "$TRAVIS_BUILD_DIR/test/unit_test" 
 branches:
   only:
     - master
