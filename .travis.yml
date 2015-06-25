@@ -3,7 +3,7 @@ compiler:
   - clang
 before_install:
  - sudo apt-get update
- - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googletest.googlecode.com/svn/trunk gtest && mkdir build && cd build && cmake .. && make"
+ - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googletest.googlecode.com/svn/trunk gtest && cd gtest && mkdir build && cd build && cmake .. && make"
  - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googlemock.googlecode.com/svn/trunk gmock && autoreconf -fvi && cd make && make"
  - "cd $TRAVIS_BUILD_DIR/test && make"
 #before_script:
