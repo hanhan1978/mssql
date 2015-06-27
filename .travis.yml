@@ -4,6 +4,7 @@ compiler:
 before_install:
  - sudo apt-get update
  - sudo apt-get install freetds-dev 
+ - autoreconf -ivf .
  - "./configure && make && sudo make install"
  - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googletest.googlecode.com/svn/trunk gtest && cd gtest && mkdir build && cd build && cmake .. && make"
  - "cd $TRAVIS_BUILD_DIR/test && svn checkout http://googlemock.googlecode.com/svn/trunk gmock && cd gmock && autoreconf -fvi && cd make && make"
