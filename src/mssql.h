@@ -38,3 +38,4 @@ void show_version();
 int is_pretty(char *line);
 char * format_string(char * sql);
 char * trim_by_pointer(char * str, const char * point);
+char * remove_consective_blank(char * str);

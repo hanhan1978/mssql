@@ -17,9 +17,27 @@ char * format_string(char * sql){
     if(slre_match("(\\s?\\\\?g?;?)\\s?$", sql, strlen(sql), caps, 4, SLRE_IGNORE_CASE) > 0) {
         trim_by_pointer(sql, caps[0].ptr);
     }
+    
     return sql;
 }
 
+char * remove_consective_blank(char * str){
+    int i = 0;
+    int k = 0;
+    char * fstr = (char *)malloc(2048);
+    char pre = str[i];
+    while(1){
+        if(str[i] == '\0'){
+            break;
+        }
+        i++;
+    }
+    return fstr;
+}
+
+/*
+ * trim string when the pointer appear
+ */
 char * trim_by_pointer(char * str, const char * point){
     int i = 0;
     while(1){
