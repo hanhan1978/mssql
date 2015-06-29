@@ -106,7 +106,7 @@ char * trans_dialect(char * line){
         "    c.name 'Column Name',"
         "    t.Name 'Data type',"
         "    c.max_length 'Max Length',"
-        "    c.is_nullable,"
+        "    c.is_nullable 'NULL',"
         "    c.collation_name 'COLLATE',"
         "    ISNULL(i.is_primary_key, 0) 'Primary Key' "
         "FROM    "
