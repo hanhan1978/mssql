@@ -11,7 +11,7 @@ current version provide these features :
 ## supported mysql dialect
 show databases  
 show tables  
-describe [table_name]  
+describe [tableName]  
 show processlist  
 
 Installation
@@ -37,3 +37,7 @@ Followings are sample installation flow on Mac OS X 10.9(Mavericks)
 $ make
 $ sudo make install
 ```
+
+### trouble shoot
++ if error occured with `./configure`
+Run `autoreconf -ivf .` at project root, and run `configure` again.
