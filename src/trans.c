@@ -17,7 +17,6 @@ char * format_string(char * sql){
     if(slre_match("(\\s?\\\\?g?;?)\\s?$", sql, strlen(sql), caps, 4, SLRE_IGNORE_CASE) > 0) {
         trim_by_pointer(sql, caps[0].ptr);
     }
-    
     return sql;
 }
 
