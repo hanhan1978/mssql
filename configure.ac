@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
-AM_INIT_AUTOMAKE(mssql, 0.2)
+AM_INIT_AUTOMAKE(mssql, 0.0.5)
 AC_OUTPUT(Makefile src/Makefile)
 AC_CONFIG_SRCDIR([src])
 
