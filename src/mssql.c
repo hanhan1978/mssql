@@ -22,11 +22,10 @@ int main(int argc, char *argv[]) {
         return 0;
     }
  
-    dbinfo = (struct dbconfig *)malloc( sizeof(struct dbconfig) );
+    dbinfo = (struct dbconfig *)malloc(sizeof(struct dbconfig));
     if (!set_cmd_option( argc, argv, dbinfo)){
         return 0;
     }
-    //eprintf("%s %s %s %s\n", dbinfo->hostname, dbinfo->password, dbinfo->username, dbinfo->database);
     if (!connect_db(dbinfo)){
         return 0;
     }
@@ -35,10 +34,9 @@ int main(int argc, char *argv[]) {
     history_file = (char *)malloc(256);
     strcpy(history_file, getenv("HOME"));
     strcat(history_file, HISTORY_FILE_NAME);
+    read_history(history_file); //read history for incremental search (ctrl + r)
 
-    read_history(history_file);
-
-    rl_startup_hook = my_startup;
+    rl_startup_hook = my_startup; //set up readline with original method binding
     my_readline();
 }
 
@@ -68,6 +66,7 @@ int my_bind_cr(int count, int key) {
     return 1;
 }
 
+/* set eoq flag when semi colon is typed */
 int my_bind_eoq(int count, int key) {
     my_eoq = 1;
     rl_insert_text(";");
@@ -86,7 +85,7 @@ char * my_readline(void) {
             exit(0);
         }
         add_history(line);
-        sql = trans_dialect(line);
+        sql = trans_dialect(line); //convert the input sql if it matches mysql query dialect
         eprintf("\nSQL EXECUTE : %s\n", sql);
         printf("\n");
         if (execute_query(sql) > 0){
