@@ -30,6 +30,7 @@ int err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dbe
 int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
 
 int connect_db(){
+  dbmsghandle(msg_handler);
   set_login(dbinfo);
   return set_dbprocess(dbinfo);
 }
