@@ -2657,7 +2657,7 @@ fi
 # Define the identity of the package.
 
  PACKAGE=mssql
- VERSION=0.1
+ VERSION=0.0.5
 
 
 cat >>confdefs.h <<_ACEOF
