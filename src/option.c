@@ -4,8 +4,6 @@
 #include <getopt.h>
 
 #include "mssql.h"
-     
-
 
 int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf) {
     int c;
