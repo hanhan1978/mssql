@@ -76,7 +76,6 @@ int execute_query(char * sql){
     }
   }
 
-
   struct result_node * head2 = NULL;
   struct result_node * temp2 = NULL;
 
