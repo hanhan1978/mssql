@@ -43,3 +43,5 @@ typedef struct result_node{
     char *value;
     struct result_node * next;
 } node;
+
+void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size);

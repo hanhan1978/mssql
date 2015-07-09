@@ -15,27 +15,6 @@ void print_boundary(int * col_length, int col_size){
     printf("+\n");
 }
 
-void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size){
-    int col = 0;
-    int i=0;
-    struct result_node * it = node;
-    struct result_node * ht; 
-
-    while(it != NULL ){
-        if(col % col_size == 0){
-            ht = hnode; 
-            printf("*************************** %d. row ***************************\n", (col/col_size)+1);
-        }
-        for(i =0; i<(max_col_size - strlen(ht->value)) ; i++){
-            printf(" ");
-        }
-        printf("%s : %s\n", ht->value, it->value);
-        it = it->next;
-        ht = ht->next;
-        col++;
-    }
-}
-
 void print_result(struct result_node * node, int * col_length, int col_size){
     int col = 0;
     int i = 0;
@@ -56,3 +35,37 @@ void print_result(struct result_node * node, int * col_length, int col_size){
     }
 }
 
+void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size){
+      eprintf("print normal 1\n");
+      print_boundary(max_col_size, col_size);
+      eprintf("print normal 2\n");
+      print_result(hnode, max_col_size, col_size);
+      eprintf("print normal 3\n");
+      print_boundary(max_col_size, col_size);
+      eprintf("print normal 4\n");
+      print_result(node, max_col_size, col_size);
+      eprintf("print normal 5\n");
+      print_boundary(max_col_size, col_size);
+      eprintf("print normal 6\n");
+}
+
+void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size){
+    int col = 0;
+    int i=0;
+    struct result_node * it = node;
+    struct result_node * ht; 
+
+    while(it != NULL ){
+        if(col % col_size == 0){
+            ht = hnode; 
+            printf("*************************** %d. row ***************************\n", (col/col_size)+1);
+        }
+        for(i =0; i<(max_col_size - strlen(ht->value)) ; i++){
+            printf(" ");
+        }
+        printf("%s : %s\n", ht->value, it->value);
+        it = it->next;
+        ht = ht->next;
+        col++;
+    }
+}

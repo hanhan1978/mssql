@@ -90,11 +90,7 @@ int execute_query(char * sql){
       print_pretty(head, head2, max_collength, colnum);
   }else{
       //print result
-      print_boundary(maxlength, colnum);
-      print_result(head, maxlength, colnum);
-      print_boundary(maxlength, colnum);
-      print_result(head2, maxlength, colnum);
-      print_boundary(maxlength, colnum);
+      print_normal(head, head2, maxlength, colnum);
   }
   if(rows > 0){
       printf("%d rows in set\n\n", rows);
