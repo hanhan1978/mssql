@@ -32,5 +32,5 @@ $ brew instal mssql
 
 
 ### trouble shoot
-+ if error occured with `./configure`
++ if error occured with `./configure`  
 Run `autoreconf -ivf .` at project root, and run `configure` again.
