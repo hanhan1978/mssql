@@ -1,8 +1,7 @@
 
 
-
 #define  CHARSET   "utf8"
-#define  PROGNAME  "DemoProg"
+#define  PROGNAME  "mssql"
 #define  HISTORY_FILE_NAME  "/.mssql_history"
 
 //#define eprintf(...) fprintf(stderr, __VA_ARGS__) 
