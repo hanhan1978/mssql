@@ -18,7 +18,7 @@ DBPROCESS *dbconn;
 void set_login(struct dbconfig *dbconf);
 int set_dbprocess(struct dbconfig *dbconf);
 void free_result(struct result_node *node);
-node * add_node(char * value, struct result_node * tail);
+node * add_node(char * value, struct result_node * tail, int len);
 int err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr); 
 int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
 
@@ -32,6 +32,8 @@ int connect_db(){
 
 int execute_query(char * sql){
 
+  dbsetopt(dbconn, DBTEXTSIZE, "2147483647", -1);
+  dbsetopt(dbconn, DBQUOTEDIDENT, "1", -1);
   dbcmd(dbconn, sql);
   dberrhandle(err_handler);
   dbmsghandle(msg_handler);
@@ -48,19 +50,15 @@ int execute_query(char * sql){
   }
 
 
-  char val[colnum][255];
   int maxlength[colnum];
   int i;
-  for(i =0; i<colnum;i++){
-    dbbind(dbconn, i+1, NTBSTRINGBIND, 0, (BYTE *)val[i]);
-  }
 
   struct result_node * head = NULL;
   struct result_node * temp = NULL;
 
   int max_collength = 0;
   for(i=0; i<colnum ;i++){
-    temp = add_node(dbcolname(dbconn,i+1), temp);
+    temp = add_node(dbcolname(dbconn,i+1), temp, 1024);
     if(head == NULL){
         head = temp;
     }
@@ -73,15 +71,22 @@ int execute_query(char * sql){
   struct result_node * head2 = NULL;
   struct result_node * temp2 = NULL;
 
+  int len;
+  unsigned int tmp_len;
   int rows = 0;
   while (dbnextrow(dbconn) != NO_MORE_ROWS) {
     for(i=0; i<colnum ;i++){
-        temp2 = add_node(val[i], temp2);
+        char * ptr = NULL;
+        len = dbdatlen(dbconn, i+1);
+        tmp_len = 32 + (2 * (len)); 
+        ptr = malloc(tmp_len);
+        dbconvert(dbconn, (dbcoltype(dbconn, i+1)) , (dbdata(dbconn, i+1)) , len, SYBCHAR, (BYTE *)ptr, -1);
+        temp2 = add_node(ptr, temp2, tmp_len);
         if(head2 == NULL){
             head2 = temp2;
         }
-        if(maxlength[i] < (int)strlen(val[i])){
-            maxlength[i] = (int)strlen(val[i]);
+        if(maxlength[i] < (int)strlen(ptr)){
+            maxlength[i] = (int)strlen(ptr);
         }
     }
     rows++;
@@ -93,9 +98,9 @@ int execute_query(char * sql){
       print_normal(head, head2, maxlength, colnum);
   }
   if(rows > 0){
-      printf("%d rows in set\n\n", rows);
+      eprintf("%d rows in set\n\n", rows);
   }else{
-      printf("Empty set\n\n");
+      eprintf("Empty set\n\n");
   }
 
   free_result(head);
@@ -129,9 +134,9 @@ int set_dbprocess(struct dbconfig *dbconf){
     return 0;
 }
 
-node * add_node(char * value, struct result_node * tail){
+node * add_node(char * value, struct result_node * tail, int len){
     struct result_node * node = (struct result_node *)malloc( sizeof(struct result_node) );
-    node->value = (char *)malloc(1024);
+    node->value = (char *)malloc(len);
     strcpy(node->value, value);
     node->next = NULL;
     if(tail != NULL){

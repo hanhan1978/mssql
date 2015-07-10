@@ -45,3 +45,4 @@ typedef struct result_node{
 } node;
 
 void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size);
+void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size);
