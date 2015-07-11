@@ -177,6 +177,8 @@ int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char
        if(msgno == 5701){
            printf ("\nDatabase changed\n");
            return 0;
+       }else if(msgno == 5703){
+           return 0; //5703 is information lang setting message
        }
        printf("ERROR %d : %s", msgno, msgtext); 
        if (line > 0) 
