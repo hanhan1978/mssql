@@ -164,11 +164,9 @@ int err_handler( DBPROCESS    *dbproc, int severity, int dberr, int oserr, char 
            return(INT_EXIT); 
       else  
       { 
-           printf("DB-Library error:\n\t%s\n",
-                dberrstr); 
-           if (oserr != DBNOERR) 
-                printf("Operating-system \
-                     error:\n\t%s\n", oserrstr); 
+           //printf("DB-Library error:\n\t%s\n", dberrstr); 
+           //if (oserr != DBNOERR) printf("Operating-system error:\n\t%s\n", oserrstr); 
+           // display nothing, because msg_handler shows better description
            return(INT_CANCEL); 
       } 
  } 
