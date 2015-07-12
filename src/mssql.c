@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     //set hisotry file path
     history_file = (char *)malloc(256);
     strcpy(history_file, getenv("HOME"));
-    strcat(history_file, HISTORY_FILE_NAME);
+    strcat(history_file, MSSQL_HISTORY_FILE_NAME);
     read_history(history_file); //read history for incremental search (ctrl + r)
 
     rl_startup_hook = my_startup; //set up readline with original method binding

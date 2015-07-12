@@ -114,10 +114,10 @@ int execute_query(char * sql){
 void set_login(struct dbconfig *dbconf){
     dbinit();
     login = dblogin();
-    DBSETLCHARSET(login, CHARSET);
+    DBSETLCHARSET(login, MSSQL_CHARSET);
     DBSETLUSER(login, dbconf->username);
     DBSETLPWD(login, dbconf->password);
-    DBSETLAPP(login, PROGNAME);
+    DBSETLAPP(login, MSSQL_PROGNAME);
     char hostname[MAXHOSTNAMELEN];
     if (gethostname(hostname, MAXHOSTNAMELEN) == 0)
     DBSETLHOST(login, hostname);

@@ -1,8 +1,10 @@
 
+#ifndef MSSQL_INCLUDE_H
+#define MSSQL_INCLUDE_H
 
-#define  CHARSET   "utf8"
-#define  PROGNAME  "mssql"
-#define  HISTORY_FILE_NAME  "/.mssql_history"
+#define  MSSQL_CHARSET   "utf8"
+#define  MSSQL_PROGNAME  "mssql"
+#define  MSSQL_HISTORY_FILE_NAME  "/.mssql_history"
 
 //#define eprintf(...) fprintf(stderr, __VA_ARGS__) 
 #define eprintf(...) do {} while(0) 
@@ -46,3 +48,5 @@ typedef struct result_node{
 
 void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size);
 void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size);
+
+#endif
