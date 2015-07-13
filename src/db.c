@@ -91,10 +91,10 @@ int execute_query(char * sql){
     }
     rows++;
   }
+
   if(pretty_print){
       print_pretty(head, head2, max_collength, colnum);
   }else{
-      //print result
       print_normal(head, head2, maxlength, colnum);
   }
   if(rows > 0){
