@@ -3,7 +3,7 @@
 
 #include "mssql.h"
 
-void print_boundary(int * col_length, int col_size){
+void _print_boundary(int * col_length, int col_size){
     int col = 0;
     int i = 0;
     for( col=0; col < col_size; col++){
@@ -15,7 +15,7 @@ void print_boundary(int * col_length, int col_size){
     printf("+\n");
 }
 
-void print_result(struct result_node * node, int * col_length, int col_size){
+void _print_result(struct result_node * node, int * col_length, int col_size){
     int col = 0;
     int i = 0;
     struct result_node * it = node;
@@ -36,17 +36,11 @@ void print_result(struct result_node * node, int * col_length, int col_size){
 }
 
 void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size){
-      eprintf("print normal 1\n");
-      print_boundary(max_col_size, col_size);
-      eprintf("print normal 2\n");
-      print_result(hnode, max_col_size, col_size);
-      eprintf("print normal 3\n");
-      print_boundary(max_col_size, col_size);
-      eprintf("print normal 4\n");
-      print_result(node, max_col_size, col_size);
-      eprintf("print normal 5\n");
-      print_boundary(max_col_size, col_size);
-      eprintf("print normal 6\n");
+      _print_boundary(max_col_size, col_size);
+      _print_result(hnode, max_col_size, col_size);
+      _print_boundary(max_col_size, col_size);
+      _print_result(node, max_col_size, col_size);
+      _print_boundary(max_col_size, col_size);
 }
 
 void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size){
