@@ -30,7 +30,6 @@ $ brew tap hanhan1978/homebrew-mssql
 $ brew instal mssql
 ```
 
-
 ### trouble shoot
 + if error occured with `./configure`  
 Run `autoreconf -ivf .` at project root, and run `configure` again.
