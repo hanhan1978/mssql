@@ -9,10 +9,10 @@ current version provide these features :
 2. some of mysql query dialect (shown below)
 
 ## supported mysql dialect
-show databases  
-show tables  
-describe [tableName]  
-show processlist  
+- show databases  
+- show tables  
+- desc(ribe) [tableName]  
+- show processlist  
 
 Installation
 ==========
