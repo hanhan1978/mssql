@@ -8,6 +8,7 @@ current version provide these features :
 1. basic CRUD sql execution to specific database.  
 2. some of mysql query dialect (shown below)
 
+
 ## supported mysql dialect
 - show databases  
 - show tables  
