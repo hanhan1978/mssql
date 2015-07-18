@@ -97,10 +97,11 @@ int execute_query(char * sql){
   }else{
       print_normal(head, head2, maxlength, colnum);
   }
+  
   if(rows > 0){
-      eprintf("%d rows in set\n\n", rows);
+      printf("%d rows in set\n\n", rows);
   }else{
-      eprintf("Empty set\n\n");
+      printf("Empty set\n\n");
   }
 
   free_result(head);
