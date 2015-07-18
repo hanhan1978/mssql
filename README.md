@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/hanhan1978/mssql.svg?branch=master)](https://travis-ci.org/hanhan1978/mssql)
 
-mssql
-=========
+# mssql
 mssql is a command line SQL Server Client.  
   
 current version provide these features :  
@@ -15,8 +14,7 @@ current version provide these features :
 - desc(ribe) [tableName]  
 - show processlist  
 
-Installation
-==========
+# Installation
 ```
 $ ./configure  
 $ make  
