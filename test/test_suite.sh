@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./trans
+./queryfilter

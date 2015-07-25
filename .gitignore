@@ -16,5 +16,6 @@ autom4te.cache
 
 src/.deps/
 test/gtest
-test/unit_test
+test/trans
+test/queryfilter
 test/gmock
