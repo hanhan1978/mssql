@@ -8,7 +8,7 @@ char * remove_consective_blank(char *);  //private
 char * remove_semicolon(char *);  //private
 char * trim_by_pointer(char *);  //private
 
-char * trans_dialect(char *); //public
+char * trans_dialect(char *, const char *); //public
 
 /*
 int main(){
@@ -22,26 +22,30 @@ int main(){
     printf("%s\n", str);
 }
 */
+char * trans_dialect(char * output, const char * input){
+  output = (char *)malloc(strlen(input));
+
+  return output;
+}
 
 char * remove_consective_blank(char * str){
-    int i = 0;
-    int k = 0;
+  int i = 0;
+  int k = 0;
 
-    char * retstr = (char *)malloc(strlen(str));
-    printf("%i\n", strlen(str));
-    char pre_ch;
+  char * retstr = (char *)malloc(strlen(str));
+  char pre_ch;
 
-    while(1){
-        if(str[i] == '\0'){
-            break;
-        }
-        if(str[i] != ' ' || pre_ch != ' '){
-            retstr[k] = str[i];
-            k++;
-        }
-        pre_ch = str[i]; 
-        i++;
+  while(1){
+    if(str[i] == '\0'){
+      break;
     }
-    retstr[k] == '\0';
-    return retstr; 
+    if(str[i] != ' ' || pre_ch != ' '){
+      retstr[k] = str[i];
+      k++;
+    }
+    pre_ch = str[i]; 
+    i++;
+  }
+  retstr[k] == '\0';
+  return retstr; 
 }
