@@ -19,20 +19,18 @@ TEST(QueryTranslateTest, ShowTables)
 
 TEST(TransFunctionTest, TestRemoveConsectiveBlank)
 {
-    char * input2 = (char *)malloc(128);
     char * output2;
-    sprintf(input2, "show  databases;");
+    const char input2[] = "show  databases;";
     output2 = remove_consective_blank(input2);
-    printf(">>>>>> [%s]\n", output2);
+    
     EXPECT_THAT(output2, StrEq("show databases;"));
 
-    char * input = (char *)malloc(128);
-    char * output;
-    sprintf(input, "SELECT  *    FROM  HOGE;");
-    output = remove_consective_blank(input);
-    EXPECT_THAT(output, StrEq("SELECT * FROM HOGE;"));
-    printf(">>>>>> [%s]\n", output);
-    free(input);free(output);
+//    char * input = (char *)malloc(128);
+//    char * output;
+//    sprintf(input, "SELECT  *    FROM  HOGE;");
+//    output = remove_consective_blank(input);
+//    EXPECT_THAT(output, StrEq("SELECT * FROM HOGE;"));
+//    free(input);free(output);
 
 }
 
