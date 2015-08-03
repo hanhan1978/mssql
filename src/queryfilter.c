@@ -8,34 +8,71 @@ char * remove_consective_blank(const char *);  //private
 char * remove_semicolon(char *);  //private
 char * trim_by_pointer(char *);  //private
 
-char * trans_dialect(char *, const char *); //public
+char * trans_dialect(const char *); //public
 
 
-int main(){
-    char * input; char * output;
-    input = (char *)malloc(128);
-    sprintf(input, "SELECT  *    FROM  HOGE;");
-    output = remove_consective_blank(input);
-    printf("[%s]%i\n", output, strlen(output));
-    free(input);
+typedef struct dialect{
+    char *regex;
+    char *sql;
+} dialect;
 
-    input = (char *)malloc(128);
-    sprintf(input, "show  databases;");
-    output = remove_consective_blank(input);
-    printf("[%s]%i\n", output, strlen(output));
+dialect * get_regex(){
+  int regex_size = 2;
+  struct dialect * da = (struct dialect *)malloc(sizeof(struct dialect) * regex_size);
+
+  int i = 0;
+  for(i; i < regex_size; i++){
+    da[i].regex = (char *) malloc(1024);
+    da[i].sql = (char *) malloc(1024);
+  }
+
+  strcpy(da[0].regex, "^show tables$");
+  strcpy(da[0].sql, "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U'");
+  strcpy(da[1].regex, "^show databases$");
+  strcpy(da[1].sql, "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 %s");
+  return da;
 }
 
-char * trans_dialect(char * output, const char * input){
-  output = (char *)malloc(strlen(input));
 
+//int main(){
+//  char * input;
+//  char * output;
+//  input = "show databases";
+//  output = trans_dialect(input);
+//  printf("result -> %s\n", output);
+//}
+
+
+
+char * trans_dialect(const char * input){
+  int i=0;
+  char * output;
+  struct dialect * ds = get_regex();
+  regex_t reg;
+  regmatch_t match;
+  char errbuf[100];
+  int reti;
+
+  for(i; i< 2 ; i++){
+    if(!regcomp(&reg, ds[i].regex, REG_EXTENDED | REG_ICASE)){
+      reti = regexec(&reg, input, 1, &match, 0);
+      if(!reti){
+        output =(char *)malloc(strlen(ds[i].sql) * sizeof(char));
+        strcpy(output, ds[i].sql);
+        return output;
+      }
+    }
+  }
+  output = (char *)malloc(strlen(input));
+  strcpy(output, input); 
   return output;
 }
+
 
 char * remove_consective_blank(const char * input){
   int i = 0;
   int k = 0;
 
-  printf("input >>>> [%s]%i\n", input, strlen(input));
   char output[strlen(input)];
   char pre_ch;
 
@@ -45,15 +82,13 @@ char * remove_consective_blank(const char * input){
     }
     if(input[i] != ' ' || pre_ch != ' '){
       output[k] = input[i];
-      printf("retprogress >>>> [%s]%i\n", output, strlen(output));
       k++;
     }
     pre_ch = input[i]; 
     i++;
   }
   output[k] == '\0';
-  char * retstr = (char *)malloc(k);
+  char * retstr = (char *)malloc(sizeof(char) * k);
   strncpy(retstr, output, k);
-  printf("output >>>> [%s]%i\n", retstr, strlen(retstr));
   return retstr; 
 }
