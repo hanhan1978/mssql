@@ -19,3 +19,4 @@ test/gtest
 test/trans
 test/queryfilter
 test/gmock
+test/utils

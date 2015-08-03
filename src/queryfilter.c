@@ -4,10 +4,6 @@
 #include <regex.h>
 
 
-char * remove_consective_blank(const char *);  //private
-char * remove_semicolon(char *);  //private
-char * trim_by_pointer(char *);  //private
-
 char * trans_dialect(const char *); //public
 
 
@@ -25,24 +21,12 @@ dialect * get_regex(){
     da[i].regex = (char *) malloc(1024);
     da[i].sql = (char *) malloc(1024);
   }
-
   strcpy(da[0].regex, "^show tables$");
   strcpy(da[0].sql, "SELECT name AS Tables FROM sysobjects WHERE xtype = 'U'");
   strcpy(da[1].regex, "^show databases$");
   strcpy(da[1].sql, "SELECT name AS DBName FROM master.dbo.sysdatabases WHERE dbid > 4 %s");
   return da;
 }
-
-
-//int main(){
-//  char * input;
-//  char * output;
-//  input = "show databases";
-//  output = trans_dialect(input);
-//  printf("result -> %s\n", output);
-//}
-
-
 
 char * trans_dialect(const char * input){
   int i=0;
@@ -68,27 +52,3 @@ char * trans_dialect(const char * input){
   return output;
 }
 
-
-char * remove_consective_blank(const char * input){
-  int i = 0;
-  int k = 0;
-
-  char output[strlen(input)];
-  char pre_ch;
-
-  while(1){
-    if(input[i] == '\0'){
-      break;
-    }
-    if(input[i] != ' ' || pre_ch != ' '){
-      output[k] = input[i];
-      k++;
-    }
-    pre_ch = input[i]; 
-    i++;
-  }
-  output[k] == '\0';
-  char * retstr = (char *)malloc(sizeof(char) * k);
-  strncpy(retstr, output, k);
-  return retstr; 
-}
