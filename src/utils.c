@@ -17,11 +17,8 @@ char * replaceSpace(const char * input);
 
 char * normalize(const char * input){
   char * replaced = replaceSpace(input);
-  printf("[%s]\n", replaced);
   char * trimmed = trim(replaced);
-  printf("[%s]\n", trimmed);
   char * normalized = remove_consective_blank(trimmed);
-  printf("[%s]\n", normalized);
   free(replaced);
   free(trimmed);
   return normalized;
@@ -31,7 +28,7 @@ int is_pretty(const char * input){
   regex_t reg;
   regmatch_t match;
 
-  if(!regcomp(&reg, "([^[:space:];])[[:space:]]*\\\\g[;[:space:]]+$", REG_EXTENDED | REG_ICASE)){
+  if(!regcomp(&reg, "([^[:space:];])[[:space:]]*\\\\g[;[:space:]]*$", REG_EXTENDED | REG_ICASE)){
     return regexec(&reg, input, 1, &match, 0) <= 0;
   }
   return 0;
@@ -39,15 +36,14 @@ int is_pretty(const char * input){
 
 char * replaceSpace(const char * input){
   int i = 0;
-  char * output = (char *) malloc (sizeof(char) * strlen(input));
+  char * output = (char *) malloc (sizeof(char) * (strlen(input) + 1));
   for(i ; i<strlen(input); i++){
     if(input[i] == '\n' || input[i] == '\t' || input[i] == '\r'){
       output[i] = ' ';
-    }else if(i == strlen(input) -1){
-      output[i] = '\0';
     }else {
       output[i] = input[i];
     }
+    output[strlen(input)] = '\0';
   }
   return output;
 }
@@ -65,7 +61,7 @@ char * rtrim(const char * input){
   regmatch_t match;
   int reti;
 
-  if(!regcomp(&reg, "([^[:space:];])[[:space:]]*\\\\?[g;[:space:]]+$", REG_EXTENDED | REG_ICASE)){
+  if(!regcomp(&reg, "([^[:space:];])[;[:space:]]*\\\\?[g;[:space:]]+$", REG_EXTENDED | REG_ICASE)){
     reti = regexec(&reg, input, 1, &match, 0);
     if(!reti){
       output = (char *)malloc(sizeof(char) * (match.rm_so + 1));
@@ -90,7 +86,7 @@ char * ltrim(const char * input){
     if(!reti){
       output = (char *)malloc(sizeof(char) * (strlen(input) - match.rm_eo));
       strncpy(output, input + match.rm_eo - 1, strlen(input) - match.rm_eo + 1);
-      output[strlen(input) - match.rm_eo] = '\0';
+      output[strlen(input) - match.rm_eo + 1] = '\0';
       return output;
     }
   }

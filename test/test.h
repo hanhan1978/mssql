@@ -1,6 +1,19 @@
 
-char * remove_consective_blank(const char *);  //private
-char * remove_terminate_string(const char *);  //private
-char * trim_by_pointer(char *);  //private
+//////// queryfilter.c
+//public
+char * trans_dialect(const char *);
 
-char * trans_dialect(const char *); //public
+
+
+
+//////// utils.c
+//public
+int is_pretty(const char * input);
+char * normalize(const char * input);
+
+//private
+char * remove_consective_blank(const char *);  
+char * rtrim(const char * input);
+char * ltrim(const char * input);
+char * trim(const char * input);
+char * replaceSpace(const char * input);
