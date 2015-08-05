@@ -10,28 +10,20 @@ using ::testing::StrEq;
 
 TEST(QueryTranslateTest, ShowTables)
 {
-    char * testquery = (char *)malloc(2048);
-    char * resquery;
-    sprintf(testquery, "show tables");
-    resquery = trans_dialect(testquery);
-    EXPECT_THAT(resquery, StartsWith("SELECT name AS Tables FROM sysobjects"));
-}
+    const char query[] ="show tables";
+    EXPECT_THAT(trans_dialect(query), StartsWith("SELECT name AS Tables FROM sysobjects"));
 
-TEST(TransFunctionTest, TestRemoveConsectiveBlank)
-{
-    char * output2;
-    const char input2[] = "show  databases;";
-    output2 = remove_consective_blank(input2);
+    const char query2[] ="show tables";
+    EXPECT_THAT(trans_dialect(query2), StartsWith("SELECT name AS Tables FROM sysobjects"));
+
+    const char query3[] ="show tables";
+    EXPECT_THAT(trans_dialect(query3), StartsWith("SELECT name AS Tables FROM sysobjects"));
+
+    const char query4[] ="show tables";
+    EXPECT_THAT(trans_dialect(query4), StartsWith("SELECT name AS Tables FROM sysobjects"));
     
-    EXPECT_THAT(output2, StrEq("show databases;"));
-
-//    char * input = (char *)malloc(128);
-//    char * output;
-//    sprintf(input, "SELECT  *    FROM  HOGE;");
-//    output = remove_consective_blank(input);
-//    EXPECT_THAT(output, StrEq("SELECT * FROM HOGE;"));
-//    free(input);free(output);
-
+    const char query5[] ="show tables";
+    EXPECT_THAT(trans_dialect(query5), StartsWith("SELECT name AS Tables FROM sysobjects"));
 }
 
 
