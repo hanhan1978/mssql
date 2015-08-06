@@ -6,6 +6,16 @@
 //public
 int is_pretty(const char * input);
 char * normalize(const char * input);
+int need_execution(const char * input);
+int is_termination(const char * input);
+int is_blank(const char * input);
+
+int main(){
+  char hoge[] = "select top 1 * from wiki;";
+  char * unko = normalize(hoge);
+  printf("%s\n", unko);
+
+}
 
 //private
 char * remove_consective_blank(const char *);  
@@ -14,6 +24,15 @@ char * ltrim(const char * input);
 char * trim(const char * input);
 char * replaceSpace(const char * input);
 
+int is_blank(const char * input){
+  regex_t reg;
+  regmatch_t match;
+  int result = 1;
+  if(!regcomp(&reg, "^\\s*$", REG_EXTENDED | REG_ICASE)){
+    result = regexec(&reg, input, 1, &match, 0) <= 0;
+  }
+  return result;
+}
 
 char * normalize(const char * input){
   char * replaced = replaceSpace(input);
@@ -22,6 +41,28 @@ char * normalize(const char * input){
   free(replaced);
   free(trimmed);
   return normalized;
+}
+
+int need_execution(const char * input){
+  regex_t reg;
+  regmatch_t match;
+  int result = 0;
+  if(!regcomp(&reg, "(\\\\G|;)\\s*$", REG_EXTENDED | REG_ICASE)){
+    result = regexec(&reg, input, 1, &match, 0) <= 0;
+  }
+  return result;
+}
+
+int is_termination(const char * input){
+  regex_t reg;
+  regmatch_t match;
+  char * temp = normalize(input);
+  int result = 0;
+  if(!regcomp(&reg, "^(\\\\q|exit)$", REG_EXTENDED)){
+    result = regexec(&reg, temp, 1, &match, 0) <= 0;
+  }
+  free(temp);
+  return result;
 }
 
 int is_pretty(const char * input){
@@ -64,7 +105,7 @@ char * rtrim(const char * input){
   if(!regcomp(&reg, "([^[:space:];])[;[:space:]]*\\\\?[g;[:space:]]+$", REG_EXTENDED | REG_ICASE)){
     reti = regexec(&reg, input, 1, &match, 0);
     if(!reti){
-      output = (char *)malloc(sizeof(char) * (match.rm_so + 1));
+      output = (char *)malloc(sizeof(char) * (match.rm_so + 2)); //added 2 just in case
       strncpy(output, input, match.rm_so + 1);
       output[match.rm_so +1] = '\0';
       return output;
@@ -84,7 +125,7 @@ char * ltrim(const char * input){
   if(!regcomp(&reg, "^[[:space:]]+([^[:space:]])", REG_EXTENDED | REG_ICASE)){
     reti = regexec(&reg, input, 1, &match, 0);
     if(!reti){
-      output = (char *)malloc(sizeof(char) * (strlen(input) - match.rm_eo));
+      output = (char *)malloc(sizeof(char) * (strlen(input) - match.rm_eo + 2));//2 is buffer...
       strncpy(output, input + match.rm_eo - 1, strlen(input) - match.rm_eo + 1);
       output[strlen(input) - match.rm_eo + 1] = '\0';
       return output;

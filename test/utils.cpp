@@ -8,6 +8,68 @@ extern "C"
 using ::testing::StartsWith;
 using ::testing::StrEq;
 
+TEST(UtilsTest, TestIsBlank)
+{
+    char input1[] = "";
+    EXPECT_TRUE(is_blank(input1));
+    char input2[] = " ";
+    EXPECT_TRUE(is_blank(input2));
+    char input3[] = "  ";
+    EXPECT_TRUE(is_blank(input3));
+    char input4[] = "a";
+    EXPECT_FALSE(is_blank(input4));
+}
+
+TEST(UtilsTest, TestNeedExecution)
+{
+    char input[] = "show tables\\G";
+    EXPECT_TRUE(need_execution(input));
+
+    char input2[] = "show tables \\G  ";
+    EXPECT_TRUE(need_execution(input2));
+
+    char input3[] = "show tables \\G ; ";
+    EXPECT_TRUE(need_execution(input3));
+
+    char input4[] = "show tables;";
+    EXPECT_TRUE(need_execution(input4));
+
+    char input5[] = "show tables ;";
+    EXPECT_TRUE(need_execution(input5));
+
+    char input6[] = "show tables ; ";
+    EXPECT_TRUE(need_execution(input6));
+
+    char input7[] = "show tables";
+    EXPECT_FALSE(need_execution(input7));
+}
+
+TEST(UtilsTest, TestIsTermination)
+{
+
+    char input1[] = "exit";
+    EXPECT_TRUE(is_termination(input1));
+    char input2[] = "\\q";
+    EXPECT_TRUE(is_termination(input2));
+    char input3[] = " exit ";
+    EXPECT_TRUE(is_termination(input3));
+    char input4[] = " exit; ";
+    EXPECT_TRUE(is_termination(input4));
+    char input5[] = " exit\\G ";
+    EXPECT_TRUE(is_termination(input5));
+    char input6[] = " \\q\\G ";
+    EXPECT_TRUE(is_termination(input6));
+    char input7[] = " \\q; ";
+    EXPECT_TRUE(is_termination(input7));
+    char input8[] = "do exit ";
+    EXPECT_FALSE(is_termination(input8));
+    char input9[] = "do \\q ";
+    EXPECT_FALSE(is_termination(input9));
+    char input10[] = "do hoge ";
+    EXPECT_FALSE(is_termination(input10));
+
+}
+
 TEST(UtilsTest, TestRemoveConsectiveBlank)
 {
     char * output;

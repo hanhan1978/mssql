@@ -10,6 +10,9 @@ char * trans_dialect(const char *);
 //public
 int is_pretty(const char * input);
 char * normalize(const char * input);
+int need_execution(const char * input);
+int is_termination(const char * input);
+int is_blank(const char * input);
 
 //private
 char * remove_consective_blank(const char *);  

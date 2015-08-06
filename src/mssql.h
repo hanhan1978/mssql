@@ -36,10 +36,12 @@ int execute_query(char * sql);
 void show_usage();
 void show_version();
 
-int is_pretty(char *line);
-char * format_string(char * sql);
-char * trim_by_pointer(char * str, const char * point);
-char * remove_consective_blank(char * str);
+
+//-----utils.c
+int is_pretty(const char * input);
+char * normalize(const char * input);
+int need_execution(const char * input);
+int is_termination(const char * input);
 
 typedef struct result_node{
     char *value;

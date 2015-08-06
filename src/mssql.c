@@ -5,7 +5,6 @@
 #include <readline/history.h>
 
 #include "mssql.h"
-#include "slre.h"
 
 int my_startup(void);
 int my_bind_cr(int, int);
@@ -52,15 +51,14 @@ int my_startup(void) {
 }
 
 int my_bind_cr(int count, int key) {
-    struct slre_cap caps[4];
-    if (my_eoq == 1 || slre_match("(\\\\G|;)\\s*$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, SLRE_IGNORE_CASE) > 0){
+    if (my_eoq == 1 || need_execution(rl_line_buffer)){
         rl_done = 1;
         return 1;
-    } else if( slre_match("^(\\\\q|exit)$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
+    } else if( is_termination(rl_line_buffer)) {
         rl_done = 1;exit_flag=1;
         return 1;
     }
-    if (strcmp( rl_line_buffer , "") == 0 || slre_match("^\\s+$", rl_line_buffer, strlen(rl_line_buffer), caps, 4, 0) > 0) {
+    if (is_blank(rl_line_buffer)) {
         printf("\n");
         rl_on_new_line();
     }else{
@@ -88,12 +86,15 @@ char * my_readline(void) {
             exit(0);
         }
         add_history(line);
-        sql = trans_dialect(line); //convert the input sql if it matches mysql query dialect
+        
+        char * norm = normalize(line);
+        sql = trans_dialect(norm); //convert the input sql if it matches mysql query dialect
         eprintf("\nSQL EXECUTE : %s\n", sql);
         printf("\n");
         if (execute_query(sql) > 0){
             write_history(history_file);
         }
+        free(norm);
         free(sql);
     }
 }
