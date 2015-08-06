@@ -10,13 +10,6 @@ int need_execution(const char * input);
 int is_termination(const char * input);
 int is_blank(const char * input);
 
-int main(){
-  char hoge[] = "select top 1 * from wiki;";
-  char * unko = normalize(hoge);
-  printf("%s\n", unko);
-
-}
-
 //private
 char * remove_consective_blank(const char *);  
 char * rtrim(const char * input);
