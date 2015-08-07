@@ -30,11 +30,13 @@ char * history_file;
 int my_eoq; 
 int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf);
 
-int connect_db();
-int execute_query(char * sql);
-
 void show_usage();
 void show_version();
+
+//----datasource.c
+int connect_db();
+struct result_set * execute_query(char * sql);
+
 
 
 //-----utils.c
@@ -43,8 +45,7 @@ char * normalize(const char * input);
 int need_execution(const char * input);
 int is_termination(const char * input);
 
-
-//-----output.c
+//-----dbresult.c
 typedef struct result_node{
     char *value;
     struct result_node * next;
@@ -59,6 +60,7 @@ typedef struct result_set {
 } result_set;
 node * add_node(char * value, struct result_node * tail, int len);
 
+//-----output.c
 void print_result(struct result_set * res);
 
 #endif

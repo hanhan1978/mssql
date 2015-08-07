@@ -28,15 +28,15 @@
 + [done] Filter (queryfilter.c)
  + [done] filter sql & convert if needed
 
-+ Datasource (datasource.c)
++ [done] Datasource (datasource.c)
  + execute login
  + execute sql
 
  - Data => db login info struct (create & use)
  - Data => resultset
 
-+ OutputCreator (output.c)
++ [done] OutputCreator (output.c)
   - create csv (stdout)
-  - create cli result style => regular, \G\G
+  - [done] create cli result style => regular, \G\G
 
-  - Data => resultset (input)
+  - [done] Data => resultset (input)

@@ -89,10 +89,12 @@ char * my_readline(void) {
         
         pretty_print = is_pretty(line);
         char * norm = normalize(line);
+        struct result_set * res;
         sql = trans_dialect(norm); //convert the input sql if it matches mysql query dialect
         eprintf("\nSQL EXECUTE : %s\n", sql);
         printf("\n");
-        if (execute_query(sql) > 0){
+        if (res = execute_query(sql)){
+            print_result(res);
             write_history(history_file);
         }
         free(norm);

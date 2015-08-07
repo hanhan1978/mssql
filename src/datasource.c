@@ -27,7 +27,7 @@ int connect_db(){
 }
 
 
-int execute_query(char * sql){
+result_set * execute_query(char * sql){
 
   dbsetopt(dbconn, DBTEXTSIZE, "2147483647", -1);
   dbsetopt(dbconn, DBQUOTEDIDENT, "1", -1);
@@ -92,10 +92,7 @@ int execute_query(char * sql){
   res->hnode = head;
   res->node = head2;
 
-  print_result(res);
-  
-
-  return 1;
+  return res;
 }
 
 

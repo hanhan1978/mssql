@@ -9,18 +9,7 @@ void _print_pretty(struct result_set * res);
 void _print_normal(struct result_set * res);
 void _print_normal_result(struct result_node * node, int * col_length, int col_size);
 void _print_normal_boundary(int * col_length, int col_size);
-void _free_result(struct result_node *node);
 
-node * add_node(char * value, struct result_node * tail, int len){
-    struct result_node * node = (struct result_node *)malloc( sizeof(struct result_node) );
-    node->value = (char *)malloc(len);
-    strcpy(node->value, value);
-    node->next = NULL;
-    if(tail != NULL){
-        tail->next = node;
-    }
-    return node;
-}
 
 /*
 int main (){
@@ -56,17 +45,6 @@ int main (){
   return 1;
 }
 */
-
-void _free_result(struct result_node *node){
-    struct result_node * it = node;
-    struct result_node * nxt;
-    while(it != NULL ){
-        free(it->value);
-        nxt = it->next;
-        free(it);
-        it = nxt;
-    }
-}
 
 void _print_normal_boundary(int * col_length, int col_size){
     int col = 0;
