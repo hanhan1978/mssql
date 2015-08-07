@@ -109,7 +109,7 @@ void print_result(struct result_set * res){
   }
 
   if(res->rows > 0){
-      printf("%d rows in set\n\n", res->rows);
+      printf("\n%d %s in set\n\n", res->rows, res->rows <= 1 ? "row" : "rows");
   }else{
       printf("Empty set\n\n");
   }
@@ -130,10 +130,11 @@ void _print_pretty(struct result_set * res){
     int i=0;
     int max_col_size = 0;
     struct result_node * it = res->node;
-    struct result_node * ht; 
+    struct result_node * ht = res->hnode; 
 
-    for(i = 0; i < res->colnum; i++){
-      max_col_size = (max_col_size < res->each_collen[i])? res->each_collen[i] : max_col_size;
+    while(ht != NULL){
+      max_col_size = (max_col_size < strlen(ht->value))? strlen(ht->value) : max_col_size;
+      ht = ht->next;
     }
 
     while(it != NULL ){
