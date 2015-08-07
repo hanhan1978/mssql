@@ -14,11 +14,8 @@ LOGINREC *login;
 DBPROCESS *dbproc;
 DBPROCESS *dbconn;
 
-
 void set_login(struct dbconfig *dbconf);
 int set_dbprocess(struct dbconfig *dbconf);
-void free_result(struct result_node *node);
-node * add_node(char * value, struct result_node * tail, int len);
 int err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr); 
 int msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, int line);
 
@@ -50,26 +47,23 @@ int execute_query(char * sql){
   }
 
 
-  int maxlength[colnum];
+  int * maxlength = (int *)malloc(sizeof(int) * colnum);
   int i;
 
   struct result_node * head = NULL;
   struct result_node * temp = NULL;
 
-  int max_collength = 0;
   for(i=0; i<colnum ;i++){
     temp = add_node(dbcolname(dbconn,i+1), temp, 1024);
     if(head == NULL){
         head = temp;
     }
     maxlength[i] = (int)strlen(dbcolname(dbconn,i+1));
-    if(max_collength < (int)strlen(dbcolname(dbconn,i+1))){
-        max_collength = (int)strlen(dbcolname(dbconn,i+1));
-    }
   }
 
   struct result_node * head2 = NULL;
   struct result_node * temp2 = NULL;
+  struct result_set * res = (struct result_set *)malloc( sizeof(struct result_set));
 
   int len;
   unsigned int tmp_len;
@@ -92,20 +86,15 @@ int execute_query(char * sql){
     rows++;
   }
 
-  if(pretty_print){
-      print_pretty(head, head2, max_collength, colnum);
-  }else{
-      print_normal(head, head2, maxlength, colnum);
-  }
-  
-  if(rows > 0){
-      printf("%d rows in set\n\n", rows);
-  }else{
-      printf("Empty set\n\n");
-  }
+  res->rows = rows;
+  res->colnum = colnum;
+  res->each_collen = maxlength;
+  res->hnode = head;
+  res->node = head2;
 
-  free_result(head);
-  free_result(head2);
+  print_result(res);
+  
+
   return 1;
 }
 
@@ -135,28 +124,8 @@ int set_dbprocess(struct dbconfig *dbconf){
     return 0;
 }
 
-node * add_node(char * value, struct result_node * tail, int len){
-    struct result_node * node = (struct result_node *)malloc( sizeof(struct result_node) );
-    node->value = (char *)malloc(len);
-    strcpy(node->value, value);
-    node->next = NULL;
-    if(tail != NULL){
-        tail->next = node;
-    }
-    return node;
-}
 
 
-void free_result(struct result_node *node){
-    struct result_node * it = node;
-    struct result_node * nxt;
-    while(it != NULL ){
-        free(it->value);
-        nxt = it->next;
-        free(it);
-        it = nxt;
-    }
-}
 
 
 int err_handler( DBPROCESS    *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr )

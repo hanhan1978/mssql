@@ -1,17 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "mssql.h"
 
-typedef struct result_node{
-    char *value;
-    struct result_node * next;
-} node;
 
-typedef struct {
-  int col_size;
-  int * col_lengthes;
-  struct result_node * node;
-} resultset;
+//private
+void _print_pretty(struct result_set * res);
+void _print_normal(struct result_set * res);
+void _print_normal_result(struct result_node * node, int * col_length, int col_size);
+void _print_normal_boundary(int * col_length, int col_size);
+void _free_result(struct result_node *node);
 
 node * add_node(char * value, struct result_node * tail, int len){
     struct result_node * node = (struct result_node *)malloc( sizeof(struct result_node) );
@@ -24,11 +22,9 @@ node * add_node(char * value, struct result_node * tail, int len){
     return node;
 }
 
-void _print_result(struct result_node * node, int * col_length, int col_size);
-void _print_boundary(int * col_length, int col_size);
+/*
 int main (){
   int a[4] = {1,2,3,6};
-  _print_boundary(a, 4);
 
   struct result_node * head = NULL;
   struct result_node * temp = NULL;
@@ -50,16 +46,29 @@ int main (){
   temp2 = add_node("hog", temp2, 1024);
   temp2 = add_node("あい", temp2, 1024);
 
-  _print_result(head, a, 4);
-  _print_boundary(a, 4);
-  _print_result(head2, a, 4);
-  _print_boundary(a, 4);
+  struct result_set * res = (struct result_set *)malloc( sizeof(struct result_set) );
+  res->colnum = 4;
+  res->each_collen = a;
+  res->hnode = head;
+  res->node = head2;
+  print_normal(res);
+  print_pretty(res);
   return 1;
 }
+*/
 
+void _free_result(struct result_node *node){
+    struct result_node * it = node;
+    struct result_node * nxt;
+    while(it != NULL ){
+        free(it->value);
+        nxt = it->next;
+        free(it);
+        it = nxt;
+    }
+}
 
-
-void _print_boundary(int * col_length, int col_size){
+void _print_normal_boundary(int * col_length, int col_size){
     int col = 0;
     int i = 0;
     for( col=0; col < col_size; col++){
@@ -71,7 +80,7 @@ void _print_boundary(int * col_length, int col_size){
     printf("+\n");
 }
 
-void _print_result(struct result_node * node, int * col_length, int col_size){
+void _print_normal_result(struct result_node * node, int * col_length, int col_size){
     int col = 0;
     int i = 0;
     struct result_node * it = node;
@@ -91,24 +100,46 @@ void _print_result(struct result_node * node, int * col_length, int col_size){
     }
 }
 
-void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size){
-      _print_boundary(max_col_size, col_size);
-      _print_result(hnode, max_col_size, col_size);
-      _print_boundary(max_col_size, col_size);
-      _print_result(node, max_col_size, col_size);
-      _print_boundary(max_col_size, col_size);
+void print_result(struct result_set * res){
+
+  if(pretty_print){
+      _print_pretty(res);
+  }else{
+      _print_normal(res);
+  }
+
+  if(res->rows > 0){
+      printf("%d rows in set\n\n", res->rows);
+  }else{
+      printf("Empty set\n\n");
+  }
+  
 }
 
-void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size){
+void _print_normal(struct result_set * res){
+      _print_normal_boundary(res->each_collen, res->colnum);
+      _print_normal_result(res->hnode, res->each_collen, res->colnum);
+      _print_normal_boundary(res->each_collen, res->colnum);
+      _print_normal_result(res->node, res->each_collen, res->colnum);
+      _print_normal_boundary(res->each_collen, res->colnum);
+}
+
+
+void _print_pretty(struct result_set * res){
     int col = 0;
     int i=0;
-    struct result_node * it = node;
+    int max_col_size = 0;
+    struct result_node * it = res->node;
     struct result_node * ht; 
 
+    for(i = 0; i < res->colnum; i++){
+      max_col_size = (max_col_size < res->each_collen[i])? res->each_collen[i] : max_col_size;
+    }
+
     while(it != NULL ){
-        if(col % col_size == 0){
-            ht = hnode; 
-            printf("*************************** %d. row ***************************\n", (col/col_size)+1);
+        if(col % res->colnum == 0){
+            ht = res->hnode; 
+            printf("*************************** %d. row ***************************\n", (col/res->colnum)+1);
         }
         for(i =0; i<(max_col_size - strlen(ht->value)) ; i++){
             printf(" ");

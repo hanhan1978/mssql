@@ -46,7 +46,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_mssql_OBJECTS = db.$(OBJEXT) mssql.$(OBJEXT) option.$(OBJEXT) \
 	usage.$(OBJEXT) utils.$(OBJEXT) queryfilter.$(OBJEXT) \
-	display.$(OBJEXT)
+	output.$(OBJEXT)
 mssql_OBJECTS = $(am_mssql_OBJECTS)
 mssql_LDADD = $(LDADD)
 mssql_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(mssql_LDFLAGS) \
@@ -72,7 +72,7 @@ AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
-CFLAGS = --pedantic -Wall -std=c99 -O2
+CFLAGS = --pedantic -Wall -std=c99 -O2 -g -O0
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
@@ -149,7 +149,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mssql_SOURCES = db.c mssql.c mssql.h option.c usage.c utils.c queryfilter.c display.c
+mssql_SOURCES = db.c mssql.c mssql.h option.c usage.c utils.c queryfilter.c output.c
 mssql_LDFLAGS = $(LDFLAGS)
 all: all-am
 
@@ -233,9 +233,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/db.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/display.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mssql.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/option.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/queryfilter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@

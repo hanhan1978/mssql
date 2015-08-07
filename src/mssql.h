@@ -43,12 +43,22 @@ char * normalize(const char * input);
 int need_execution(const char * input);
 int is_termination(const char * input);
 
+
+//-----output.c
 typedef struct result_node{
     char *value;
     struct result_node * next;
 } node;
 
-void print_normal(struct result_node * hnode, struct result_node * node, int * max_col_size, int col_size);
-void print_pretty(struct result_node * hnode, struct result_node * node, int max_col_size, int col_size);
+typedef struct result_set {
+  int rows;
+  int colnum;
+  int * each_collen;
+  struct result_node * hnode;
+  struct result_node * node;
+} result_set;
+node * add_node(char * value, struct result_node * tail, int len);
+
+void print_result(struct result_set * res);
 
 #endif
