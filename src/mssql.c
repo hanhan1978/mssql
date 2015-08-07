@@ -87,6 +87,7 @@ char * my_readline(void) {
         }
         add_history(line);
         
+        pretty_print = is_pretty(line);
         char * norm = normalize(line);
         sql = trans_dialect(norm); //convert the input sql if it matches mysql query dialect
         eprintf("\nSQL EXECUTE : %s\n", sql);
