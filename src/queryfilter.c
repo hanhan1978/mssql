@@ -86,7 +86,7 @@ char * trans_dialect(const char * input){
       }
     }
   }
-  output = (char *)malloc(strlen(input));
+  output = (char *)malloc(sizeof(char) * (strlen(input) + 2));
   strcpy(output, input); 
   return output;
 }

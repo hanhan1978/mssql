@@ -17,6 +17,13 @@ char * ltrim(const char * input);
 char * trim(const char * input);
 char * replaceSpace(const char * input);
 
+//int main(){
+//  char hoge[] = "select top 1 * from wiki";
+//  char * fuga = normalize(hoge);
+//  free(fuga);
+//
+//}
+
 int is_blank(const char * input){
   regex_t reg;
   regmatch_t match;
@@ -104,7 +111,7 @@ char * rtrim(const char * input){
       return output;
     }
   }
-  output = (char *)malloc(sizeof(char) * strlen(input));
+  output = (char *)malloc(sizeof(char) * (strlen(input) +2));
   strcpy(output, input); 
   return output;
 }
@@ -124,7 +131,7 @@ char * ltrim(const char * input){
       return output;
     }
   }
-  output = (char *)malloc(sizeof(char) * strlen(input));
+  output = (char *)malloc(sizeof(char) * (strlen(input) +2));
   strcpy(output, input); 
   return output;
 }
@@ -149,7 +156,7 @@ char * remove_consective_blank(const char * input){
     i++;
   }
   output[k] = '\0';
-  char * retstr = (char *)malloc(sizeof(char) * k);
+  char * retstr = (char *)malloc(sizeof(char) * (k + 2));
   strncpy(retstr, output, k);
   retstr[k] = '\0';
   return retstr; 
