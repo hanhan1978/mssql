@@ -2,13 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
-
-//public
-int is_pretty(const char * input);
-char * normalize(const char * input);
-int need_execution(const char * input);
-int is_termination(const char * input);
-int is_blank(const char * input);
+#include <mssql.h>
 
 //private
 char * remove_consective_blank(const char *);  
@@ -17,12 +11,6 @@ char * ltrim(const char * input);
 char * trim(const char * input);
 char * replaceSpace(const char * input);
 
-//int main(){
-//  char hoge[] = "select top 1 * from wiki";
-//  char * fuga = normalize(hoge);
-//  free(fuga);
-//
-//}
 
 int is_blank(const char * input){
   regex_t reg;
