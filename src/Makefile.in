@@ -46,7 +46,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_mssql_OBJECTS = datasource.$(OBJEXT) mssql.$(OBJEXT) \
 	option.$(OBJEXT) usage.$(OBJEXT) utils.$(OBJEXT) \
-	queryfilter.$(OBJEXT) output.$(OBJEXT) dbresult.$(OBJEXT)
+	queryfilter.$(OBJEXT) output.$(OBJEXT) dbresult.$(OBJEXT) \
+	service.$(OBJEXT)
 mssql_OBJECTS = $(am_mssql_OBJECTS)
 mssql_LDADD = $(LDADD)
 mssql_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(mssql_LDFLAGS) \
@@ -149,7 +150,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mssql_SOURCES = datasource.c mssql.c mssql.h option.c usage.c utils.c queryfilter.c output.c dbresult.c
+mssql_SOURCES = datasource.c mssql.c mssql.h option.c usage.c utils.c queryfilter.c output.c dbresult.c services/service.c
 mssql_LDFLAGS = $(LDFLAGS)
 all: all-am
 
@@ -238,6 +239,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/option.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/queryfilter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/service.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@
 
@@ -254,6 +256,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+
+service.o: services/service.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT service.o -MD -MP -MF $(DEPDIR)/service.Tpo -c -o service.o `test -f 'services/service.c' || echo '$(srcdir)/'`services/service.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/service.Tpo $(DEPDIR)/service.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='services/service.c' object='service.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o service.o `test -f 'services/service.c' || echo '$(srcdir)/'`services/service.c
+
+service.obj: services/service.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT service.obj -MD -MP -MF $(DEPDIR)/service.Tpo -c -o service.obj `if test -f 'services/service.c'; then $(CYGPATH_W) 'services/service.c'; else $(CYGPATH_W) '$(srcdir)/services/service.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/service.Tpo $(DEPDIR)/service.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='services/service.c' object='service.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o service.obj `if test -f 'services/service.c'; then $(CYGPATH_W) 'services/service.c'; else $(CYGPATH_W) '$(srcdir)/services/service.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

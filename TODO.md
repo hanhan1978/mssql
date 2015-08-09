@@ -33,7 +33,7 @@
  + execute sql
 
  - Data => db login info struct (create & use)
- - Data => resultset
+ - [done ] Data => resultset
 
 + [done] OutputCreator (output.c)
   - create csv (stdout)
