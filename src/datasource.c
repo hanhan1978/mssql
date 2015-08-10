@@ -34,18 +34,20 @@ result_set * execute_query(char * sql){
   dbcmd(dbconn, sql);
   dberrhandle(err_handler);
   dbmsghandle(msg_handler);
+  struct result_set * res = (struct result_set *)malloc( sizeof(struct result_set));
+  res->rows = 0;
+  res->hnode = NULL;
 
   if (dbsqlexec(dbconn) == FAIL) {
-    return 0;
+    return res;
   }
   dbresults(dbconn); 
 
   /* bind selected value  */
   int colnum = dbnumcols(dbconn);
   if(colnum <= 0){
-      return 1;
+      return res;
   }
-
 
   int * maxlength = (int *)malloc(sizeof(int) * colnum);
   int i;
@@ -63,7 +65,6 @@ result_set * execute_query(char * sql){
 
   struct result_node * head2 = NULL;
   struct result_node * temp2 = NULL;
-  struct result_set * res = (struct result_set *)malloc( sizeof(struct result_set));
 
   int len;
   unsigned int tmp_len;
@@ -94,7 +95,6 @@ result_set * execute_query(char * sql){
 
   return res;
 }
-
 
 
 

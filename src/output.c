@@ -80,6 +80,10 @@ void _print_normal_result(struct result_node * node, int * col_length, int col_s
 
 void print_result(struct result_set * res){
 
+  if(res->rows == 0 && res->hnode == NULL){
+    return;
+  }
+
   if(pretty_print){
       _print_pretty(res);
   }else{
