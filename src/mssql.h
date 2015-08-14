@@ -6,8 +6,8 @@
 #define  MSSQL_PROGNAME  "mssql"
 #define  MSSQL_HISTORY_FILE_NAME  "/.mssql_history"
 
-//#define eprintf(...) fprintf(stderr, __VA_ARGS__) 
-#define eprintf(...) do {} while(0) 
+#define eprintf(...) fprintf(stderr, __VA_ARGS__) 
+//#define eprintf(...) do {} while(0) 
 
 typedef struct dbconfig{
     char *username;
