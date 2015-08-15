@@ -1,4 +1,3 @@
-
 #ifndef MSSQL_INCLUDE_H
 #define MSSQL_INCLUDE_H
 
