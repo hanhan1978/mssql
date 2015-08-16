@@ -27,11 +27,10 @@ int set_cmd_option(int argc, char **argv, struct dbconfig *dbconf);
 void show_usage();
 void show_version();
 
+
 //----datasource.c
 int connect_db();
 struct result_set * execute_query(char * sql);
-
-
 
 //-----utils.c
 int is_pretty(const char * input);
